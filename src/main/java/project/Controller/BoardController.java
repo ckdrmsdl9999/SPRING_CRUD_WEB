@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import project.Repository.BoardRepository;
 import project.Repository.CommentRepository;
 import project.Repository.MemberRepository;
+import project.Repository.ReplieRepository;
 import project.domain.Board;
 import project.domain.Comment;
 import project.domain.Member;
+import project.domain.Replie;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,8 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
+    private final ReplieRepository replieRepository;
+
     @GetMapping("/board/write")//글쓰기 이동
     public String BoardWrite(@ModelAttribute Board board, BindingResult result)
     { return "boardwrite"; }
@@ -32,11 +36,15 @@ public class BoardController {
     public String BoardRead(@PathVariable("id")Long id,
                             @ModelAttribute("board") Board board,Model model){
         board=boardRepository.findOne(id);
-        board.setViewcount(board.getViewcount()+1);
+        board.setViewcount(board.getViewcount()+1);//조회수
+
         List<Comment> comment = commentRepository.findAll(); //null처리?
+
         boardRepository.save(board);
+
         model.addAttribute("board",board);
         model.addAttribute("comment",comment);
+
         return "boardcontent";
         //알아볼거 누르면 controlleㄱ단에서 가는건가? 아님브라우저저장된 htmlboard만불러오나 불러오기만하네 model값이랑랑
    }
@@ -63,9 +71,18 @@ public class BoardController {
         model.addAttribute("board",board);
         return "board";
     }
+
     @PostMapping("/boardContent")//댓글
     public String BoardContent(@ModelAttribute Comment comment, Model model){
         commentRepository.save(comment);
+        return "redirect:/board";
+    }
+
+    @PostMapping("/boardReply")//댓글달기
+    public String BoardReply(@ModelAttribute Replie replie, Model model){
+        replie.setOrders(1);
+        replieRepository.save(replie);
+
         return "redirect:/board";
     }
 //    /* 게시글 목록 */

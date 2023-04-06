@@ -19,8 +19,7 @@ public class Member extends BaseTimeEntity {
     @Column(name="member_id")
     private Long id;
 
-    @Column(nullable = false, length = 30, unique = true)
-    //unique만먹히고 null중복안되는거 nullable은안먹히는상황
+    @Column(nullable = false, length = 30, unique = true)//unique만먹히고 null중복안되는거 nullable은안먹히는상황
     private String username; // 아이디
 
     @Column(length = 100)
@@ -30,7 +29,7 @@ public class Member extends BaseTimeEntity {
     private String email;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<Board> member = new ArrayList<>();
+    private List<Board> boards = new ArrayList<>();
 
     @Builder
     public Member(String username, String password, String email) {

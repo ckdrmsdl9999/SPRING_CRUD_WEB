@@ -16,32 +16,16 @@ public class Board extends BaseTimeEntity{
     @Id @GeneratedValue
     @Column(name="board_id")
     private Long id;
-
     @Column
     public String title;
-
     @Column
     public String writer;
-
     @Column
     public String content;
-
     @Column
     public Long viewcount;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-//    public void setMember(String username){
-//        member.setUsername(username);
-//
-//    }
-
-//    public Board(String name, String infoname) {
-//        this.title = name;
-//        this.content = infoname;
-//
-//    }
 }
