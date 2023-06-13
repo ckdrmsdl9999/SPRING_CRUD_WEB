@@ -74,14 +74,18 @@ public class BoardController {
 
     @PostMapping("/boardContent")//댓글
     public String BoardContent(@ModelAttribute Comment comment, Model model){
+        comment.setDepth((long)0);
+        comment.setParentid(comment.getId());
         commentRepository.save(comment);
+
         return "redirect:/board";
     }
 
     @PostMapping("/boardReply")//댓글달기
-    public String BoardReply(@ModelAttribute Replie replie, Model model){
-        replie.setOrders(1);
-        replieRepository.save(replie);
+    public String BoardReply(@ModelAttribute Comment comment, Model model){
+        comment.setParentid(comment.getId());////////부모댓글의 아이디를 넣어야하는데;
+        comment.setDepth((long)1);
+        commentRepository.save(comment);
 
         return "redirect:/board";
     }
