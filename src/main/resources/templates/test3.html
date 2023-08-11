@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <!--  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
+  <!--  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
+  <style>
+    .fakeimg {
+      height: 200px;
+      background: #aaa;
+    }  #toc-content {
+         display: none;
+       }
+    #toc-toggle {
+      cursor: pointer;
+      color: #2962ff;
+    }
+    #toc-toggle:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <link href="static/css/headers.css" rel="stylesheet">
+
+</head>
+<body>
+
+<header class="p-3 bg-dark text-white">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+      </a>
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+        <li><a href="#" class="nav-link px-2 text-white">Board</a></li>
+        <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+        <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+      </ul>
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+      </form>
+      <div class="text-end">
+        <button type="button" class="btn btn-outline-light me-2" onclick="moveLogin();">Login</button>
+        <button type="button" class="btn btn-warning" onclick="moveJoin();">Sign-up</button>
+      </div>
+    </div>
+  </div>
+</header>
+<br>
+<div class="col-md-10 col-sm-10" align="center"/>
+<table border="1" width="1200px" >
+  <tr>
+    <td width="900px" th:text="'제목 : ' + ${board.title}">
+      제목:
+    </td>
+    <td th:text="'작성자 : ' + ${board.writer}">
+      작성자:
+    </td>
+  </tr>
+  <tr height="200px">
+    <td colspan="2" valign="top"  th:text="${board.content}">
+      게시글 내용
+    </td>
+  </tr>
+</table>
+<br>
+<br>
+</div>
+
+<div class="container">
+  <div class="col-md-10 col-sm-10">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        Comment panel
+      </div>
+      <div class="panel-body">
+        <form action="/boardContent"  method="post">
+          <textarea class="form-control" placeholder="write a comment..." rows="3"  id="content" name="content"></textarea>
+          <br>
+          <button type="submit" class="btn btn-info pull-right">Post</button>
+          <div class="clearfix"></div>
+          <hr>
+        </form>
+        <div class="media" th:each="comment : ${comment}">
+          <div class="media-left">
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading title" >Fahmi Arif</h4>
+            <p class="komen" th:text="${comment.content}">
+              kalo bisa ya ndak usah gan biar cepet<br>
+            </p>
+            <button id="replie" name="replie" type="button"  class="btn btn-primary">reply</button><hr>
+          </div>
+        </div>
+      </div></div></div></div>
+
+<!--<div class="container"><table class="table table-hover">-->
+<!--    <thead><tr><th>번호</th><th>작성자</th><th>내용</th></tr></thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="comment : ${comment}">-->
+<!--      <td th:text="${comment.id}"></td>-->
+<!--      <td th:text="${comment.writer}"></td>-->
+<!--      <td th:text="${comment.content}"></td>-->
+<!--      <td><button id="replie" name="replie" type="button"  class="btn btn-primary">답글</button></td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+<!--</div>-->
+<script>
+  //대댓글 입력창
+  $(document).on("click","button[name='replie']",function(){ //동적 이벤트
+    if(status){
+      alert("수정과 대댓글은 동시에 불가합니다.");
+      return false;
+    }
+    status = true;
+    $("#reply_add").remove();
+    var reply_id = $(this).attr("reply_id");
+    var last_check = false;//마지막 tr 체크
+
+    //입력받는 창 등록
+    var replyEditor =
+            '<tr id="reply_add" class="reply_reply">'+
+            '   <td width="820px">'+
+            '       <textarea name="reply_reply_content" rows="3" cols="50"></textarea>'+
+            '   </td>'+
+            '   <td align="center">'+
+            '       <button name="reply_reply_save" reply_id="'+reply_id+'">등록</button>'+
+            '       <button name="reply_reply_cancel">취소</button>'+
+            '   </td>'+
+            '</tr>';
+
+    var prevTr = $(this).parent().parent().next();
+
+    //부모의 부모 다음이 sub이면 마지막 sub 뒤에 붙인다.
+    //마지막 리플 처리
+    if(prevTr.attr("reply_type") == undefined){
+      prevTr = $(this).parent().parent();
+    }else{
+      while(prevTr.attr("reply_type")=="sub"){//댓글의 다음이 sub면 계속 넘어감
+        prevTr = prevTr.next();
+      }
+      if(prevTr.attr("reply_type") == undefined){//next뒤에 tr이 없다면 마지막이라는 표시를 해주자
+        last_check = true;
+      }else{
+        prevTr = prevTr.prev();
+      }
+    }
+    if(last_check){//마지막이라면 제일 마지막 tr 뒤에 댓글 입력을 붙인다.
+      $('#reply_area tr:last').after(replyEditor);
+    }else{
+      prevTr.after(replyEditor);
+    }
+  });
+</script>
+</body>
+</html>

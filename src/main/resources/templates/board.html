@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+    <body>
+    <div class="starter-template">
+
+        <table class = "table-bordered" >
+            <thead>
+            <tr>
+                <th class="col-md-1">번호</th>
+                <th class="col-md-5" text-center>제목</th>
+                <th class="col-md-3">작성자</th>
+                <th class="col-md-2">작성일</th>
+                <th class="col-md-2">조회수</th>
+            </tr>
+            <tr th:each="board : ${board}">
+                <td><a th:href="@{'/board/boardContent/' + ${board.id}}"><span th:text="${board.id}"></span></a></td>
+                <td th:text="${board.title}"></td>
+                <td th:text="${board.writer}"></td>
+                <td th:text="${board.createdDate}"></td>
+                <td th:text="${board.viewcount}"></td>
+            </tr>
+            </thead>
+<!--            <tr th:each="board2:${posts}">&lt;!&ndash;여기 each="board~에서 board기능체크&ndash;&gt;-->
+<!--                <td ><a th:href="@{'/board/boardwrite'}"><span th:text="${board2.title}">343</span></a> </td>-->
+<!--                <td th:text="${board2.writer}">10</td>-->
+<!--            </tr>-->
+        </table>
+        <!-- Pagination -->
+        <div style="margin: 10px">
+<!--            <span th:each="pageNum : ${pageList}" th:inline="text">-->
+<!--                <a th:href="@{'/board/list/?page=' + ${pageNum}}">[[${pageNum}]]</a>-->
+<!--            </span>-->
+<!--            &lt;!&ndash; 글쓰기 버튼 &ndash;&gt;-->
+            <a style="float: right" class="btn btn-primary" th:href="@{/board/write}">글쓰기</a>
+        </div>
+        <!-- 검색 form -->
+        <form action="/board/search" method="GET">
+            <div>
+                <input name="keyword" type="text" placeholder="검색어를 입력해주세요.">
+                <button class="btn btn-primary">검색하기</button>
+            </div>
+        </form>
+
+    </div>
+</body>
+</html>
