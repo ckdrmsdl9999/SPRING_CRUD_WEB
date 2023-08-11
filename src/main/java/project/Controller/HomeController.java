@@ -36,6 +36,10 @@ public class HomeController {
         model.addAttribute("member", loginMember);
         return "loginhome";
     }
-
+    @GetMapping("/test") //requestmapping으로해도 무방
+    public String test()
+    {
+        return "testpage";
+    }
 
     }

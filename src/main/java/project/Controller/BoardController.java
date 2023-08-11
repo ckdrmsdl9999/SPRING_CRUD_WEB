@@ -29,9 +29,19 @@ public class BoardController {
     private final MemberRepository memberRepository;
     private final ReplieRepository replieRepository;
 
+    @ResponseBody
+    @GetMapping("/board/write2")//글쓰기 이동
+    public List<Comment> BoardWrite2(@ModelAttribute Board board, BindingResult result)
+    {
+        List<Comment> comment = commentRepository.findAll();
+//        Gson gson = new GsonBuilder().
+
+        return comment; }
+
     @GetMapping("/board/write")//글쓰기 이동
     public String BoardWrite(@ModelAttribute Board board, BindingResult result)
     { return "boardwrite"; }
+
     @GetMapping("/board/boardContent/{id}")// 글 세부내용
     public String BoardRead(@PathVariable("id")Long id,
                             @ModelAttribute("board") Board board,Model model){
