@@ -94,16 +94,16 @@
       </div>
 
       <div class="panel-body">
-        <form action="/boardContent"  method="post">
+<!--        <form action="/boardContent"  method="post">-->
           <textarea class="form-control" placeholder="write a comment..." rows="3"  id="content" name="content"></textarea>
           <br>
           <button type="submit" id="Submit" class="btn btn-info pull-right">등록하기</button>
             <div class="clearfix"></div>
           <hr>
-        </form>
+<!--        </form>-->
 
 
-<!--        <form action="/boardReply"  method="post">-->
+        <form action="/boardReply"  method="post">
 
           <div class="media" th:each="comment : ${comment}">
 
@@ -134,38 +134,39 @@
 
             </th:block>
           </div>
-<!--        </form>-->
+        </form>
 
       </div></div></div></div>
 
-<table align="center" width="500" border="1" id="rtb">
+<table align="center" width="500" border="1" id="rtb" >
   <thead>
   <td colspan="4"><b id="rCount">댓글목록</b></td>
   </thead>
-  <tbody>
+  <tbody >
   </tbody>
 </table>
 
 <script>
-  //댓글 입력창
-  // $(document).on("click","button[id='Submit']",function(){ //동적 이벤트
-  //   $.ajax({
-  //     type: "post",
-  //     url: "/boardContent",
-  //     data: {"comment": $("#comment").val(),
-  //             "bid": $("#bid").val()},
-  //     success: function (data) {
-  //       if (data.result == "success") {
-  //         location.reload();
-  //       }
-  //     },
-  //     error: function (request, status, error) {
-  //       alert("code: " + request.status + "\n" + "error: " + error);
-  //     }
-  //
-  //   });
-  //   getReplyList();
-  // });
+  // 댓글 입력창
+  $(document).on("click","button[id='Submit']",function(){ //동적 이벤트
+    $.ajax({
+      type: "post",
+      url: "/boardContent",
+      data: {"content": $("#content").val()},
+      success: function (data) {          getReplyList();
+        if (data.result == "success") {
+          location.reload();
+      alert("이거 발생되니");
+        }
+
+      },
+      error: function (request, status, error) {
+        alert("code: " + request.status + "\n" + "error: " + error);
+      }
+
+    });
+
+  });
 
   $(document).ready(function(){
 

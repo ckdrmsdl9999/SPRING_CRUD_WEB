@@ -72,9 +72,10 @@ public class BoardController {
         board.setWriter(username);
         Member member = memberRepository.findByLoginId(username).orElse(null);
         board.setMember(member);//외래키~~
-          boardRepository.save(board);
-          return "redirect:/board";
+        boardRepository.save(board);
+        return "redirect:/board";
     }
+
     @GetMapping("/board")//게시판출력
     public String Board(Model model){
         List<Board> board = boardRepository.findAll();
