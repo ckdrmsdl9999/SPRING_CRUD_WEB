@@ -40,12 +40,12 @@
 
 <header class="p-3 bg-dark text-white">
   <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" id="testo">
       <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
       </a>
 
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" >
         <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
         <li><a href="#" class="nav-link px-2 text-white">Board</a></li>
         <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
@@ -86,7 +86,7 @@
 <br>
 </div>
 <!--아래부터 댓글-->
-<div class="container">
+<div class="container" >
   <div class="col-md-10 col-sm-10">
     <div class="panel panel-info">
       <div class="panel-heading">
@@ -97,44 +97,51 @@
 <!--        <form action="/boardContent"  method="post">-->
           <textarea class="form-control" placeholder="write a comment..." rows="3"  id="content" name="content"></textarea>
           <br>
+        <input type="hidden" id="writer" th:value="${board.writer}"/>
+        <input type="hidden" id="boardid" th:value="${board.id}"/>
           <button type="submit" id="Submit" class="btn btn-info pull-right">등록하기</button>
             <div class="clearfix"></div>
           <hr>
 <!--        </form>-->
 
 
-        <form action="/boardReply"  method="post">
-
-          <div class="media" th:each="comment : ${comment}">
+<!--&lt;!&ndash;        <form action="/boardReply"  method="post">&ndash;&gt;대댓글용도로한듯?-->
+<!--        //댓글출력-->
+          <div id="rta">
+          <div class="media mt-3" th:each="comment : ${comment}" >
 
             <th:block th:if="${comment.depth==0}">
           <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇddddddddddddd if문해서 대댓글 댓글, select * from 댓글 order by 댓글번호, 대댓글번호-->
             <div class="media-left">
             </div>
-
             <div class="media-body">
-              <h4 class="media-heading title" >comment death yo</h4>
+              <h4 class="media-heading title" id="commentwriter" th:text="${comment.writer}" >comment death yo</h4>
+              <input type="hidden" id="commentid" th:value="${comment.id}" >
+<!--              https://selfdevelope.tistory.com/120    id값주는거-->
+               <input type="hidden" id="parentid" th:value="${comment.parentid}">
               <p class="komen" th:text="${comment.content}">
                 kalo bisa ya ndak usah gan biar cepet commentid숨김처리리<br>
               </p> <button id="replie" name="replie" type="button"  class="btn btn-primary">reply</button><hr>
             </div>
-
             </th:block>
+
             <th:block th:if="${comment.depth==1}">
               <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇddddddddddddd if문해서 대댓글 댓글, select * from 댓글 order by 댓글번호, 대댓글번호-->
-              <div class="media-left"></div>
-              <div class="media-body">
-
-                <h4 class="media-heading title" >coment of coment death yo</h4>
+              <div class="media-left mt-3"></div>
+              <div class="media-body mt-3">
+                <h4 class="media-heading title" th:text="${comment.writer}" >comment death yo</h4>
+<!--                위에꺼 타임리프가 아닌값이면 어떻게되지-->
+                <input type="hidden"  th:value="${comment.id}" >
+                <input type="hidden"  th:value="${comment.parentid}" >
                 <p class="komen" th:text="${comment.content}">
                   kalo bisa ya ndak usah gan biar cepet<br>
                 </p>
-                <button id="replie2" name="replie" type="button"  class="btn btn-primary">reply</button><hr>
+                <button id="replie2" name="replie" type="button"  class="btn btn-primary">replyof</button><hr>
               </div>
-
             </th:block>
-          </div>
-        </form>
+
+          </div></div>
+<!--        </form>-->
 
       </div></div></div></div>
 
@@ -152,87 +159,101 @@
     $.ajax({
       type: "post",
       url: "/boardContent",
-      data: {"content": $("#content").val()},
-      success: function (data) {          getReplyList();
-        if (data.result == "success") {
-          location.reload();
+      data: {"content": $("#content").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },//boardid값추가 1.26
+      success: function (data) {
+        // getReplyList();
+        console.log(data+"로그얌 ㅎㅎㅋㅋ");
+        if (data.result == "success") { //여기 if문동작안하는듯?
+          location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고
       alert("이거 발생되니");
+          console.log("버튼임니다 ㅎ ");
+          // getReplyList3();
         }
+        console.log(data+"data체크");
+        getReplyList3();
+        // console.log(data.result+"데이타점리설트값이당");undefined값
 
       },
       error: function (request, status, error) {
-        alert("code: " + request.status + "\n" + "error: " + error);
+        alert("에러러code: " + request.status + "\n" + "error: " + error);
       }
-
     });
-
   });
 
   $(document).ready(function(){
-
-    getReplyList();
+    console.log("document 임니다 ㅎ ");
+    // getReplyList();
   });
 //댓글입력
-  function commentPost() {
+//   function commentPost() {
+//     $.ajax({
+//       type: "post",
+//       url: "/api/comment/post",
+//       data: {"comment": $("#comment").val(), "bid": $("#bid").val()},
+//       success: function (data) {
+//         if (data.result == "success") {
+//           location.reload();
+//         }
+//       },
+//       error: function (request, status, error) {
+//         alert("code: " + request.status + "\n" + "error: " + error);
+//       }
+//
+//     });
+//   }
+
+//   function getReplyList2() { //대댓글 출력창
+//     //댓글목록 불러오는 함수
+//     var $tableBody = $('#rtb tbody'); //$는 의미없음 그냥 변수명 중 하나
+//     // $tableBody.html(''); //tbody를 초기화 시켜야 댓글 목록의 중첩을 막을수 있음 아니면 등록할떄마다 append로 이어짐
+//     var $divBody = $('#rta')
+//
+//     for ( var i in result) {
+//     // 안된이유 media-body에 바로 /div로 닫힘
+//       var $tr = $("<div class='media' id='rta'>");
+//       var $trr = $("<div class='media-left'></div>");
+//       var $tr2 = $("<div class='media-body' autocomplete='off'>" + "<h4 class='media-heading title'  width='100'>댓글아이디</h4>"
+//               + "<p class='komen'>댓글내용</p><button class='btn btn-primary'>버튼</button><hr></div></div>");
+//
+//       $tr.append($trr);
+//       $tr.append($tr2);
+//       $divBody.append($tr);
+//
+//     }
+// //////여기부분수정해야 새벽3시
+//   }
+
+//   function getReplyList3() {
+//     var board = "${board.boardNo}";
+//     $.ajax({
+//       url : "/board/write3",
+//       data : {
+//       },
+//       type : "get",
+//     })
+//     .done(function (fragment){
+//     $('#rta').replaceWith(fragment);
+// });
+//   }
+
+  function getReplyList3() {
+    // var board = "${board.boardNo}";
     $.ajax({
-      type: "post",
-      url: "/api/comment/post",
-      data: {"comment": $("#comment").val(), "bid": $("#bid").val()},
-      success: function (data) {
-        if (data.result == "success") {
-          location.reload();
-        }
+      type : "get",
+      url : "/board/write3",
+      data : {"id": $("#boardid").val(),
       },
-      error: function (request, status, error) {
-        alert("code: " + request.status + "\n" + "error: " + error);
-      }
 
-    });
+      success : function(result) {
+        $('#rta').replaceWith(result);
+        // console.log(result+"콘솔로그라능 ㅎㅎ");
+      }
+    })
+
+  //참고 여기서 위의 #rta에다가    넘어온 result값을붙이는거     #testo면 testo에 rta부분이 붙어짐,
+    // 불러오는순서나원리? 일부러/boardcontent해놓고 값넣어봐서 찾아봐도되고
+  //확인해보니 넘어올때 test값까지 다 넣어서옴     즉 댓글내용까지
   }
-
-function getReplyList() {
-  var board = "${board.boardNo}";
-  $.ajax({
-    url : "/board/write2",
-    data : {
-      "boardNo" : board
-    },
-    type : "get",
-    success : function(result) { //댓글목록 불러오는 함수
-      var $tableBody = $('#rtb tbody'); //$는 의미없음 그냥 변수명 중 하나
-      $tableBody.html(''); //tbody를 초기화 시켜야 댓글 목록의 중첩을 막을수 있음 아니면 등록할떄마다 append로 이어짐
-      $('#rCount').text("댓글 ("+result.length+")") //댓글수 출력
-      if (result != null) {
-        console.log(result+"임니다 ㅎ ");
-        for ( var i in result) {
-          var $tr = $("<tr>");
-          var $rWriter = $("<td width='100'>").text(
-                  result[i].writer);
-          var $rContent = $("<td>").text(
-                  result[i].content);
-          // var $rCreatDate = $("<td width='100'>").text(
-          //         result[i].rCreateDate);
-          var $btnArea = $("<td width='80'>").append(
-                  "<a href='modifyreply(${board.boardNo})'>수정</a>").append(
-                  "<a href='#'>삭제</a>");
-
-          $tr.append($rWriter);
-          $tr.append($rContent);
-          // $tr.append($rCreatDate);
-          $tr.append($btnArea);
-          $tableBody.append($tr);
-
-        }
-      }
-
-    },
-    error : function() {
-      console.log("요청실패");
-
-    }
-  })
-
-}
 
   //대댓글 입력창
   $(document).on("click","button[name='replie']",function(){ //동적 이벤트
@@ -244,21 +265,33 @@ function getReplyList() {
     $("#reply_add").remove();
     var reply_id = $(this).attr("reply_id");
     var last_check = false;//마지막 tr 체크
-
-    //입력받는 창 등록
+    // var pid=$('input#parentid').val();//jquery문법, controller에서 바로받는방법도있다 cdata https://dodamit.tistory.com/30
+    var pid=$(this).prev().prev().val();
+     // var cwriter=$('h4#commentwriter').text();
+    var cwriter=$(this).prev().prev().prev().prev().text();
+    var boardid2=$("#boardid").val();
+     // var testid=$(this).prev().prev().val();//이거잘됨
+    //입력받는 창 등록--------url을 ajax쪽으로바꾸고 hidden해서 commentid값
     var replyEditor =
             '<form action="/boardReply"  method="post">' +
             '<tr id="reply_add" class="reply_reply">'+
             '   <td width="820px">'+
-            '       <textarea name="content" rows="3" cols="50"></textarea>'+
+            '       <textarea name="content" id="repliecontent" rows="3" cols="50"></textarea>'+
             '   </td>'+
             '   <td align="center">'+
             '       <button type= "submit" name="reply_reply_save" reply_id="'+reply_id+'">등록</button>'+
             '       <button  name="reply_reply_cancel">취소</button>'+
             '   </td>'+
             '</tr>'+
+            '<input type="hidden" name="parentid"  id="replieparentid" value="'+pid+'">'+
+            '<input type="hidden" name="writer"  id="repliewriter" value="'+cwriter+'">'+
+            '<input type="hidden" name="boardid" id="replieboardid" value="'+boardid2+'">';
             '</form>';
+    //해당버튼댓글 부모의 값 id, 작성자등을 가져와서 하는식으로해보자  console.log찍어서함녀될듯
 
+     // alert(testid+"testid값");
+    // alert(cwriter+"cwriter값");
+    // console.log(temp.value()+"temp의 value인 id값")
     var prevTr = $(this).parent().parent().next();
     //부모의 부모 다음이 sub이면 마지막 sub 뒤에 붙인다.
     //마지막 리플 처리
@@ -280,6 +313,32 @@ function getReplyList() {
       prevTr.after(replyEditor);
     }
   });
+
+  // $(document).on("click","button[name='reply_reply_save']",function(){ //동적 이벤트
+  //   $.ajax({
+  //     type: "post",
+  //     url: "/boardReply",
+  //     data: {"content": $("#repliecontent").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },//boardid값추가 1.26
+  //     success: function (data) {
+  //       // getReplyList();
+  //       console.log(data+"로그얌 ㅎㅎㅋㅋ");
+  //       if (data.result == "success") { //여기 if문동작안하는듯?
+  //         location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고
+  //         alert("이거 발생되니");
+  //         console.log("버튼임니다 ㅎ ");
+  //         // getReplyList3();
+  //       }
+  //       console.log(data+"data체크");
+  //       getReplyList3();
+  //       // console.log(data.result+"데이타점리설트값이당");undefined값
+  //
+  //     },
+  //     error: function (request, status, error) {
+  //       alert("에러러code: " + request.status + "\n" + "error: " + error);
+  //     }
+  //   });
+  // });
+
 </script>
 
 </body>

@@ -19,6 +19,9 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @Column
+    private Long boardid;
+
+    @Column
     private Long parentid;
 
     @Column

@@ -8,8 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import project.Repository.BoardRepository;
 import project.Repository.MemberRepository;
+import project.domain.Board;
 import project.domain.Member;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -17,6 +21,16 @@ import project.domain.Member;
 public class HomeController {
 
     private final MemberRepository memberRepository;
+
+
+    private final BoardRepository boardRepository;
+//    @GetMapping("/board")//게시판출력
+//    public String Board(Model model){
+//        List<Board> board = boardRepository.findAll();
+//        model.addAttribute("board",board);
+//        return "board";
+//    }
+
 
     @GetMapping("/") //requestmapping으로해도 무방
     public String homeLogin(@CookieValue(value = "memberId",required = false) String memberId, Model model)
