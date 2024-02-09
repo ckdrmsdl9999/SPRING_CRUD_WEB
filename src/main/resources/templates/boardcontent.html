@@ -13,8 +13,6 @@
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
   <link href="static/css/bootstrap.min.css" rel="stylesheet">
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <!--  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
-  <!--  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
 
   <style>
     .fakeimg {
@@ -37,7 +35,7 @@
 
 </head>
 <body>
-
+<!--<header th:replace=""></header>-->
 <header class="p-3 bg-dark text-white">
   <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" id="testo">
@@ -85,6 +83,7 @@
 <br>
 <br>
 </div>
+
 <!--아래부터 댓글-->
 <div class="container" >
   <div class="col-md-10 col-sm-10">
@@ -94,10 +93,11 @@
       </div>
 
       <div class="panel-body">
+
 <!--        <form action="/boardContent"  method="post">-->
           <textarea class="form-control" placeholder="write a comment..." rows="3"  id="content" name="content"></textarea>
           <br>
-        <input type="hidden" id="writer" th:value="${board.writer}"/>
+        <input type="hidden" id="writer" th:value="${writer2}"/>
         <input type="hidden" id="boardid" th:value="${board.id}"/>
           <button type="submit" id="Submit" class="btn btn-info pull-right">등록하기</button>
             <div class="clearfix"></div>
@@ -131,7 +131,7 @@
               <div class="media-left mt-3"></div>
               <div class="media-body mt-3">
                 <h4 class="media-heading title" th:text="${comment.writer}" >comment death yo</h4>
-<!--                위에꺼 타임리프가 아닌값이면 어떻게되지-->
+
                 <input type="hidden"  th:value="${comment.id}" >
                 <input type="hidden"  th:value="${comment.parentid}" >
                 <p class="komen" th:text="${comment.content}">
@@ -225,18 +225,6 @@
 // //////여기부분수정해야 새벽3시
 //   }
 
-//   function getReplyList3() {
-//     var board = "${board.boardNo}";
-//     $.ajax({
-//       url : "/board/write3",
-//       data : {
-//       },
-//       type : "get",
-//     })
-//     .done(function (fragment){
-//     $('#rta').replaceWith(fragment);
-// });
-//   }
 
   function getReplyList3() {
     // var board = "${board.boardNo}";
@@ -270,7 +258,8 @@
     // var pid=$('input#parentid').val();//jquery문법, controller에서 바로받는방법도있다 cdata https://dodamit.tistory.com/30
     var pid=$(this).prev().prev().val();
      // var cwriter=$('h4#commentwriter').text();
-    var cwriter=$(this).prev().prev().prev().prev().text();
+    // var cwriter=$(this).prev().prev().prev().prev().text();
+    var cwriter=$("#writer").val();
     var boardid2=$("#boardid").val();
      // var testid=$(this).prev().prev().val();//이거잘됨
     //입력받는 창 등록--------url을 ajax쪽으로바꾸고 hidden해서 commentid값

@@ -21,8 +21,6 @@ import java.util.List;
 public class HomeController {
 
     private final MemberRepository memberRepository;
-
-
     private final BoardRepository boardRepository;
 //    @GetMapping("/board")//게시판출력
 //    public String Board(Model model){
