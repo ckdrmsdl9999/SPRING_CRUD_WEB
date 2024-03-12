@@ -18,6 +18,7 @@ public class MemberRepository {
     private final EntityManager em;
 
     public void saveMember(Member member){
+//        member.setUsername("ki");
         em.persist(member);
     }//DB에 MEMBER저장
 

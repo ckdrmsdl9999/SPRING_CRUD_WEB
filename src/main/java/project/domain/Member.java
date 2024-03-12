@@ -2,9 +2,13 @@ package project.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import net.bytebuddy.implementation.bind.annotation.Empty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,13 +23,16 @@ public class Member extends BaseTimeEntity {
     @Column(name="member_id")
     private Long id;
 
-    @Column(nullable = false, length = 30, unique = true)//unique만먹히고 null중복안되는거 nullable은안먹히는상황
+//    @Column( length = 30, unique = true)//unique만먹히고 null중복안되는거 nullable은안먹히는상황
+    @Column
+    @NotEmpty
     private String username; // 아이디
 
     @Column(length = 100)
     private String password;
 
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(nullable = true, length = 50, unique = true)
+//    @Email
     private String email;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)

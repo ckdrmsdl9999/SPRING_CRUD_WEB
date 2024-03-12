@@ -10,14 +10,12 @@ import project.Repository.BoardRepository;
 import project.Repository.CommentRepository;
 import project.Repository.MemberRepository;
 import project.Repository.ReplieRepository;
-import project.domain.Board;
-import project.domain.Comment;
-import project.domain.Member;
-import project.domain.Replie;
+import project.domain.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
@@ -35,7 +33,6 @@ public class BoardController {
     public List<Comment> BoardWrite2(@ModelAttribute Board board, BindingResult result)
     {
         List<Comment> comment = commentRepository.findAll();
-//        Gson gson = new GsonBuilder().
         return comment;
 //        return "redirect:/comment";
     }
@@ -44,7 +41,6 @@ public class BoardController {
     public String BoardWrite3(@ModelAttribute Board board,Model model, BindingResult result)
     {
         List<Comment> comment = commentRepository.findBy(board.getId());
-//        Gson gson = new GsonBuilder().
         System.out.print("testttttttttttttttt"+board.getId()+"ddd ");
         model.addAttribute("comment",comment);
         return "/boardcontent :: #rta";
@@ -83,7 +79,8 @@ public class BoardController {
     { return "boardwrite"; }
 
     @GetMapping("/board/boardContent/{id}")// 글 세부내용
-    public String BoardRead(@PathVariable("id")Long id, @ModelAttribute("board") Board board,Model model, HttpServletRequest request){
+    public String BoardRead(@PathVariable("id")Long id, @ModelAttribute("board") Board board,Model model,
+                            HttpServletRequest request, HttpSession httpSession){
         board=boardRepository.findOne(id);
         board.setViewcount(board.getViewcount()+1);//조회수
 //        List<Comment> comment = commentRepository.findAll(); //null처리?
@@ -92,6 +89,7 @@ public class BoardController {
         model.addAttribute("board",board);
         model.addAttribute("comment",comment);
 
+        LoginForm loginForm = (LoginForm) httpSession.getAttribute("mysessionmember");
         String username="";
         Cookie[] cookie=request.getCookies();
         for(int i=0;i<cookie.length;i++)
@@ -99,26 +97,29 @@ public class BoardController {
             if(cookie[i].getName().equals("memberId"))
             {username=cookie[i].getValue();}
         }
-        model.addAttribute("writer2",username);
+        model.addAttribute("writer2",username);//username->loginForm.getloginId
 
         return "boardcontent";
         //알아볼거 누르면 controlleㄱ단에서 가는건가? 아님브라우저저장된 htmlboard만불러오나 불러오기만하네 model값이랑랑
    }
     @PostMapping("/board")//글쓰기
     public String BoardWrite2(@ModelAttribute  Board board, BindingResult result,
-                              HttpServletRequest request){
-      String username="";
-      Cookie[] cookie=request.getCookies();
-      for(int i=0;i<cookie.length;i++)
-       {
-           if(cookie[i].getName().equals("memberId"))
-           {username=cookie[i].getValue();}
-       }
+                              HttpServletRequest request, HttpSession httpSession){
+        LoginForm loginForm = (LoginForm) httpSession.getAttribute("mysessionmember");
+//        String username="";
+//      Cookie[] cookie=request.getCookies();
+//      for(int i=0;i<cookie.length;i++)
+//       {
+//           if(cookie[i].getName().equals("memberId"))
+//           {username=cookie[i].getValue();}
+//       }
+        System.out.print("게시판확인"+loginForm.getLoginId());
         board.setViewcount((long)0);
 
-        board.setWriter(username);
-        Member member = memberRepository.findByLoginId(username).orElse(null);
+        board.setWriter(loginForm.getLoginId());
+        Member member = memberRepository.findByLoginId(loginForm.getLoginId()).orElse(null);
         board.setMember(member);//외래키~~
+
         boardRepository.save(board);
         return "redirect:/board";
     }

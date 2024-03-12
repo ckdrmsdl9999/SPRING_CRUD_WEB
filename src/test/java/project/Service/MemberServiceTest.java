@@ -9,6 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import project.Repository.MemberRepository;
 import project.domain.Member;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -24,11 +31,21 @@ class MemberServiceTest {
     @Test
     void 회원_가입(){
         //given
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
         Member member = Member.builder()
-                .username("mins")
+                .username("ㅇㄹ")
                 .password("1234")
-                .email("email")
+                .email("")
                 .build();
+
+        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        for (ConstraintViolation<Member> violation : violations) {
+            System.out.println("violation=" + violation);
+            System.out.println("violation.message=" + violation.getMessage());
+        }
+
         //when
         Long joinId = memberService.join(member);
         //then
