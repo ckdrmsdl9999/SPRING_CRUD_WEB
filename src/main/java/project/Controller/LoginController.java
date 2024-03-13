@@ -57,9 +57,9 @@ import javax.servlet.http.Cookie;
     }
     @PostMapping("/login")
     public String login(@ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletResponse response,
-                        RedirectAttributes redirectAttributes, HttpServletRequest request) {
+                        RedirectAttributes redirectAttributes, HttpServletRequest request,HttpSession session) {
 //        sessionManager.createSession(form,response);
-        HttpSession session = request.getSession();
+//        HttpSession session = request.getSession();
         session.setAttribute("mysessionmember",form);
 
         if (bindingResult.hasErrors()) {
@@ -82,13 +82,15 @@ import javax.servlet.http.Cookie;
     }
 
     @GetMapping("/logout")//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
-    public String logoutForm(HttpServletRequest request, HttpServletResponse response)
+    public String logoutForm(HttpServletRequest request, HttpServletResponse response,HttpSession session)
     {
-        expireCookie("memberId",response);
+        expireCookie("mysessionname",response);
 
-        HttpSession session = request.getSession(false);
+//        HttpSession session = request.getSession(false);
+        System.out.println("세션목록"+session.getId());
         if (session != null) {
             session.invalidate();
+            System.out.println("세션제거부분"+session.getId());
         }
         return "redirect:/";
     }

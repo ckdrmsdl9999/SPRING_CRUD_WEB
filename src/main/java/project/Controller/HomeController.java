@@ -19,10 +19,10 @@ public class HomeController {
     private final MemberRepository memberRepository;
     @GetMapping("/") //requestmapping으로해도 무방
     public String homeLogin(@CookieValue(value = "memberId",required = false) String memberId,
-                            Model model, HttpSession session) {
+                            Model model, HttpSession session,HttpServletRequest request) {
 //        public String homeLogin(@CookieValue(value = "memberId",required = false) String memberId, Model model,
 //                HttpServletRequest request) {
-//        HttpSession session=request.getSession();
+        session=request.getSession(false);
 //        Object form=null; form=session.getAttribute("mysessionmember");
         LoginForm form=(LoginForm) session.getAttribute("mysessionmember");
 
