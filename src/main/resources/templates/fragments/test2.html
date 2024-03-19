@@ -1,61 +1,29 @@
-<html>
-<head><meta charset="utf-8">
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-            $(document).on("click","button[name='delete']",function(){
-            });
-            var reply_count = 0; //원래 DB에 저장하고 저장 아이디 번호를 넘겨줘야 하는데 DB 없이 댓글 소스만 있어 DB 에서 아이디 증가하는것처럼 스크립트에서 순번을 생성
-            var status = false; //수정과 대댓글을 동시에 적용 못하도록
-
-            // $("#reply2").click(function(){
-            //     alert("게시판 리스트로 이동");
-            //     //location.href = "/board/list";
-            // });
-
-            $(document).on("click","button[name='reply']",function(){
-                var reply_area = $("#reply_area");
-                var prevTr = $(this).parent().parent().next().next().next();
-                prevTr=prevTr.prev();
-                var replyEditor =  //제이쿼리에 오류뜨면 밑에부분부터 안댐 참고
-                    '<tr id="reply_add" class="reply_reply">'+
-                    '   <td width="820px">'+
-                    '       <textarea name="reply_reply_content" rows="3" cols="50"></textarea>'+
-                    '   </td>'+
-                    '</tr>';
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"/>
+<link href="starter-template.css" th:href="@{/css/starter-template.css}" rel="stylesheet"/>
 
 
-                // $('#reply_area tr:last').after(replyEditor);
-                prevTr.append("hello bonjoure nihao anyang");
-                prevTr.after(replyEditor);
-
-            });
-        });
-
-
-
- </script>
-</head>
-
-<body>
-<div>
-<table border="1" width="1200px" bordercolor="#46AA46" id="reply_area">
-  <tr>
-    <td width="500px">ffffff
-        <button id="reply2" name="reply">글 수정</button>
-        <button id="delete" name="delete">글 삭제</button></td>
-  </tr>
-  <tr>
-    <td width="500px">ffffff     </td>
-  </tr>
-
-  <tr>
-    <td>빙뱅붐 클럽    </td>
-  </tr>
-</table>
-</div>
-</body>
+<header th:fragment="header3">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">메인페이지</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" >
+                <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+                <li><a href="/board" class="nav-link px-2 text-white">Board</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
 </html>

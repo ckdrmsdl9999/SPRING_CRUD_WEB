@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="../css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
-    <body>
+    <body >
+
+    <th:block th:if="${session.mysessionmember==null}"}>
+        <div th:replace="fragments/Header.html :: header(naming='board2')"></div>
+    </th:block>
+    <th:block th:if="${session.mysessionmember!=null}"}>
+    <div th:replace="fragments/LoginHeader.html :: Loginheader(naming='board2')"></div>
+    </th:block>
+<div class="container my-3" >
+
     <div class="starter-template">
 
-        <table class = "table-bordered" >
-            <thead>
+        <table class = "table" >
+            <thead class = table-dark>
             <tr>
                 <th class="col-md-1">번호</th>
                 <th class="col-md-5" text-center>제목</th>
@@ -18,18 +28,15 @@
                 <th class="col-md-2">작성일</th>
                 <th class="col-md-2">조회수</th>
             </tr>
+
+            </thead>
             <tr th:each="board : ${board}">
-                <td><a th:href="@{'/board/boardContent/' + ${board.id}}"><span th:text="${board.id}"></span></a></td>
-                <td th:text="${board.title}"></td>
+                <td th:text="${board.id}"></td>
+                <td><a th:href="@{'/board/boardContent/' + ${board.id}}"><span th:text="${board.title}"></span></a></td>
                 <td th:text="${board.writer}"></td>
                 <td th:text="${board.createdDate}"></td>
                 <td th:text="${board.viewcount}"></td>
             </tr>
-            </thead>
-<!--            <tr th:each="board2:${posts}">&lt;!&ndash;여기 each="board~에서 board기능체크&ndash;&gt;-->
-<!--                <td ><a th:href="@{'/board/boardwrite'}"><span th:text="${board2.title}">343</span></a> </td>-->
-<!--                <td th:text="${board2.writer}">10</td>-->
-<!--            </tr>-->
         </table>
         <!-- Pagination -->
         <div style="margin: 10px">
@@ -48,5 +55,39 @@
         </form>
 
     </div>
-</body>
+</div>
+
+<!--    <script>-->
+<!--        // 댓글 입력창-->
+<!--        $(document).on("click","button[id='Submit']",function(){ //동적 이벤트-->
+<!--            $.ajax({-->
+<!--                type: "post",-->
+<!--                url: "/boardContent",-->
+<!--                data: {"content": $("#content").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },//boardid값추가 1.26-->
+<!--                success: function (data) {-->
+<!--                    // getReplyList();-->
+<!--                    // console.log(data+"로그얌 ㅎㅎㅋㅋ");-->
+<!--                    //   if (data.result == "success") { //여기 if문동작안하는듯?-->
+<!--                    //     location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고-->
+<!--                    // alert("이거 발생되니");-->
+<!--                    //     console.log("버튼임니다 ㅎ ");-->
+<!--                    //     // getReplyList3();-->
+<!--                    //   }-->
+<!--                    console.log(data+"data체크");-->
+<!--                    getReplyList3();-->
+<!--                    // console.log(data.result+"데이타점리설트값이당");undefined값-->
+
+<!--                },-->
+<!--                error: function (request, status, error) {-->
+<!--                    alert("에러러code: " + request.status + "\n" + "error: " + error);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+
+<!--        $(document).ready(function(){-->
+<!--            console.log("document 임니다 ㅎ ");-->
+<!--            // getReplyList();-->
+<!--        });-->
+<!--    </script>-->
+    </body>
 </html>

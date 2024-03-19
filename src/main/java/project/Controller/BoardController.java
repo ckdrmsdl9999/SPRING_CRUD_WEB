@@ -36,7 +36,7 @@ public class BoardController {
 //        return "redirect:/comment";
     }
             //이거 없애버려서 오류떳음 이걸왜붙일까->
-    @GetMapping("/board/write3")//글쓰기 이동
+    @GetMapping("/board/write3")//댓글출력부분
     public String BoardWrite3(@ModelAttribute Board board,Model model, BindingResult result)
     {
         List<Comment> comment = commentRepository.findBy(board.getId());
@@ -46,15 +46,15 @@ public class BoardController {
 //        /boardcontent로하면 통으로붙음  #rta면 rta안에값만 붙음
 //        return "redirect:/comment";
     }
-    @PostMapping("/boardContent")//댓글
+    @PostMapping("/boardContent")//댓글작성
     public String BoardContent(@ModelAttribute Comment comment, Model model){
         comment.setDepth((long)0);
-
         commentRepository.save(comment);
         comment.setParentid(comment.getId());    //저장하고 em에서 가져오기?
         System.out.println(comment.getId());
-        //
-        return "redirect:/board";     //이 값 왜들어가는지 이해안됨 시발 까먹은건지몰랏던건지**
+        return "home";     //redirect아니면에러나네..는아니고 /가안되는이유-home이나 html파일명하는거지 /만하면 /파일이없음 redirect
+        //해야함 url식// getmapping /board하면랜더링안됨 리다이렉트해야댐
+//        return "redirect:/board";     //이 값 왜들어가는지 이해안됨 시발 까먹은건지몰랏던건지** 콘솔에는찍힘 board소스가..
     }
 
     @PostMapping("/boardReply")//대대댓글달
@@ -109,15 +109,29 @@ public class BoardController {
         boardRepository.save(board);
         return "redirect:/board";
     }
+//    @GetMapping("/board")//게시판출력
+//    public String Board(Model model){
+//        List<Board> board = boardRepository.findAll();
+//        model.addAttribute("board",board);
+//        //세션이 존재하면-header loginheader선택할수있는걸로  "/boardcontent :: #rta";이렇게?
+//        //  return "/boardcontent :: #rta"
+//        //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
+//        return "board";
+//    }
 
     @GetMapping("/board")//게시판출력
-    public String Board(Model model){
+    public String Board(Model model,HttpServletRequest request){
         List<Board> board = boardRepository.findAll();
         model.addAttribute("board",board);
+        //세션이 존재하면-header loginheader선택할수있는걸로  "/boardcontent :: #rta";이렇게?
+        //  return "/boardcontent :: #rta"
+        //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
+        HttpSession session=request.getSession(false);
+//        System.out.print("세션체크:"+session.getAttribute("mysessionmember"));
+        if(session==null){System.out.println("세션이없음세션이없음세션이없음세션이없음세션이없음세션이없음");
+            return "board";}
         return "board";
     }
-
-
 
 
 //    /* 게시글 목록 */
@@ -131,9 +145,6 @@ public class BoardController {
 //
 //        return "board/list.html";
 //    }
-
-
-
 
 
 }

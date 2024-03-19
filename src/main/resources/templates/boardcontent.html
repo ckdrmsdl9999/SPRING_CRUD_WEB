@@ -165,13 +165,13 @@
       data: {"content": $("#content").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },//boardid값추가 1.26
       success: function (data) {
         // getReplyList();
-        console.log(data+"로그얌 ㅎㅎㅋㅋ");
-        if (data.result == "success") { //여기 if문동작안하는듯?
-          location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고
-      alert("이거 발생되니");
-          console.log("버튼임니다 ㅎ ");
-          // getReplyList3();
-        }
+        // console.log(data+"로그얌 ㅎㅎㅋㅋ");
+      //   if (data.result == "success") { //여기 if문동작안하는듯?
+      //     location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고
+      // alert("이거 발생되니");
+      //     console.log("버튼임니다 ㅎ ");
+      //     // getReplyList3();
+      //   }
         console.log(data+"data체크");
         getReplyList3();
         // console.log(data.result+"데이타점리설트값이당");undefined값
@@ -187,45 +187,6 @@
     console.log("document 임니다 ㅎ ");
     // getReplyList();
   });
-//댓글입력
-//   function commentPost() {
-//     $.ajax({
-//       type: "post",
-//       url: "/api/comment/post",
-//       data: {"comment": $("#comment").val(), "bid": $("#bid").val()},
-//       success: function (data) {
-//         if (data.result == "success") {
-//           location.reload();
-//         }
-//       },
-//       error: function (request, status, error) {
-//         alert("code: " + request.status + "\n" + "error: " + error);
-//       }
-//
-//     });
-//   }
-
-//   function getReplyList2() { //대댓글 출력창
-//     //댓글목록 불러오는 함수
-//     var $tableBody = $('#rtb tbody'); //$는 의미없음 그냥 변수명 중 하나
-//     // $tableBody.html(''); //tbody를 초기화 시켜야 댓글 목록의 중첩을 막을수 있음 아니면 등록할떄마다 append로 이어짐
-//     var $divBody = $('#rta')
-//
-//     for ( var i in result) {
-//     // 안된이유 media-body에 바로 /div로 닫힘
-//       var $tr = $("<div class='media' id='rta'>");
-//       var $trr = $("<div class='media-left'></div>");
-//       var $tr2 = $("<div class='media-body' autocomplete='off'>" + "<h4 class='media-heading title'  width='100'>댓글아이디</h4>"
-//               + "<p class='komen'>댓글내용</p><button class='btn btn-primary'>버튼</button><hr></div></div>");
-//
-//       $tr.append($trr);
-//       $tr.append($tr2);
-//       $divBody.append($tr);
-//
-//     }
-// //////여기부분수정해야 새벽3시
-//   }
-
 
   function getReplyList3() {
     // var board = "${board.boardNo}";
@@ -306,30 +267,7 @@
     }
   });
 
-  // $(document).on("click","button[name='reply_reply_save']",function(){ //동적 이벤트
-  //   $.ajax({
-  //     type: "post",
-  //     url: "/boardReply",
-  //     data: {"content": $("#repliecontent").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },//boardid값추가 1.26
-  //     success: function (data) {
-  //       // getReplyList();
-  //       console.log(data+"로그얌 ㅎㅎㅋㅋ");
-  //       if (data.result == "success") { //여기 if문동작안하는듯?
-  //         location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고
-  //         alert("이거 발생되니");
-  //         console.log("버튼임니다 ㅎ ");
-  //         // getReplyList3();
-  //       }
-  //       console.log(data+"data체크");
-  //       getReplyList3();
-  //       // console.log(data.result+"데이타점리설트값이당");undefined값
-  //
-  //     },
-  //     error: function (request, status, error) {
-  //       alert("에러러code: " + request.status + "\n" + "error: " + error);
-  //     }
-  //   });
-  // });
+
 
 </script>
 

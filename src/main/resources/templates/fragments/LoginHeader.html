@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"/>
+<link href="starter-template.css" th:href="@{/css/starter-template.css}" rel="stylesheet"/>
+
+
+<header th:fragment="Loginheader(naming)">
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="#">메인페이지</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="/board">공지사항</a></li>
+          <li class="nav-item"><a class="nav-link" href="/items">상품목록</a></li>
+          <li class="nav-item"><a class="nav-link" href="/board">게시판</a></li>
+<!--          <li class="mb-3" th:text="|로그인: ${member.username}|">로그인 사용자 이름</li>-->
+          <li class="nav-item"><a class="nav-link" th:href="@{'/logout/'+${naming}}">로그아웃</a></li>
+          <li class="nav-item"><a class="nav-link" href="/test">테스트페이지로 이동</a></li>
+          <!--                <li class="mb-3" th:text="|로그인: ${member.name}|">로그인 사용자 이름</li>-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">All Products</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+              <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+</html>

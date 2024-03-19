@@ -84,7 +84,7 @@ import javax.servlet.http.Cookie;
     @GetMapping("/logout")//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
     public String logoutForm(HttpServletRequest request, HttpServletResponse response,HttpSession session)
     {
-        expireCookie("mysessionname",response);
+//        expireCookie("mysessionname",response);
 
 //        HttpSession session = request.getSession(false);
         System.out.println("세션목록"+session.getId());
@@ -92,8 +92,26 @@ import javax.servlet.http.Cookie;
             session.invalidate();
             System.out.println("세션제거부분"+session.getId());
         }
+
+
         return "redirect:/";
     }
+
+        @GetMapping("/logout/board2")//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
+        public String logoutForm2(HttpServletRequest request, HttpServletResponse response,HttpSession session)
+        {
+            expireCookie("mysessionname",response);
+            System.out.print("board2성공!!!!ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+//        HttpSession session = request.getSession(false);
+            System.out.println("세션목록"+session.getId());
+            if (session != null) {
+                session.invalidate();
+                System.out.println("세션제거부분"+session.getId());
+            }
+
+
+            return "redirect:/board";
+        }
 
     void expireCookie(String cookiename ,HttpServletResponse response){
         Cookie cookie = new Cookie(cookiename,"5");
