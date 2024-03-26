@@ -1,23 +1,22 @@
     package project.Controller;
-    //import antlr.StringUtils;   //        밑에걸로대체
     import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.build.Plugin;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+    import org.springframework.ui.Model;
+    import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
     import org.springframework.validation.annotation.Validated;
-    import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
+    import org.springframework.web.bind.annotation.*;
+    import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
     import org.springframework.web.servlet.mvc.support.RedirectAttributes;
     import project.Security.session.SessionManager;
     import project.Service.LoginService;
 import project.Service.MemberService;
-import project.domain.LoginForm;
+    import project.domain.Board;
+    import project.domain.Comment;
+    import project.domain.LoginForm;
 import project.domain.Member;
 import org.springframework.util.StringUtils;////
 import javax.servlet.http.Cookie;
@@ -25,13 +24,14 @@ import javax.servlet.http.Cookie;
     import javax.servlet.http.HttpServletResponse;
     import javax.servlet.http.HttpSession;
     import javax.validation.Valid;
+    import java.util.List;
+
     @Slf4j
     @Controller
     @RequiredArgsConstructor
     public class LoginController {
     private final MemberService memberService;
     private final LoginService loginService;
-//    private final SessionManager sessionManager;
     @GetMapping("/memberJoinForm") //
     public String addForm(@ModelAttribute("member") Member member) { return "memberJoin"; }
     @PostMapping("/memberJoinForm")//회원가입버튼 정보적고 누르면 이동
@@ -85,33 +85,39 @@ import javax.servlet.http.Cookie;
     public String logoutForm(HttpServletRequest request, HttpServletResponse response,HttpSession session)
     {
 //        expireCookie("mysessionname",response);
-
 //        HttpSession session = request.getSession(false);
         System.out.println("세션목록"+session.getId());
         if (session != null) {
             session.invalidate();
             System.out.println("세션제거부분"+session.getId());
         }
-
-
         return "redirect:/";
     }
 
-        @GetMapping("/logout/board2")//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
-        public String logoutForm2(HttpServletRequest request, HttpServletResponse response,HttpSession session)
+       @GetMapping(value = {"/logout/board/{something}/{something2}","/logout/board/{something}"})//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
+        public String logoutForm5(@PathVariable(required = false) String something,
+                                  @PathVariable(required = false) String something2,
+                                  HttpServletRequest request, HttpServletResponse response, HttpSession session)
         {
-            expireCookie("mysessionname",response);
-            System.out.print("board2성공!!!!ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-//        HttpSession session = request.getSession(false);
-            System.out.println("세션목록"+session.getId());
+            //       expireCookie("mysessionname",response);
+            System.out.println("something은뭘까"+something+"something2은뭘까"+something2);
+
+
             if (session != null) {
                 session.invalidate();
                 System.out.println("세션제거부분"+session.getId());
             }
-
-
-            return "redirect:/board";
+            if (something.equals("main"))
+            {return "redirect:/";}
+            if (something.equals("null"))
+            {something="";
+                return "redirect:/board/"+something;}
+            if (something2==null&&!something.equals(null))//equals는 null예외생김
+            {
+                return "redirect:/board/"+something;}
+            return "redirect:/board/"+something+"/"+something2;
         }
+
 
     void expireCookie(String cookiename ,HttpServletResponse response){
         Cookie cookie = new Cookie(cookiename,"5");

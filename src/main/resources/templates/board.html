@@ -10,10 +10,10 @@
     <body >
 
     <th:block th:if="${session.mysessionmember==null}"}>
-        <div th:replace="fragments/Header.html :: header(naming='board2')"></div>
+        <div th:replace="fragments/Header.html :: header"></div>
     </th:block>
     <th:block th:if="${session.mysessionmember!=null}"}>
-    <div th:replace="fragments/LoginHeader.html :: Loginheader(naming='board2')"></div>
+    <div th:replace="fragments/LoginHeader.html :: Loginheader(null,'')"></div>
     </th:block>
 <div class="container my-3" >
 

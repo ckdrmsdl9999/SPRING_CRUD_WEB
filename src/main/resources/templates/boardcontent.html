@@ -15,6 +15,26 @@
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
   <style>
+    .freestyle {
+      font-size: 14px;
+      font-weight: 400;
+      align-items: center;
+      border-top: 2px solid #2e4361;
+      background-color: #D2E1FF;
+      padding: 1rem;
+      height:5rem; width:100rem; padding-top:1rem;
+      margin-left:5rem;
+    }
+    .freestyle2 {
+      font-size: 14px;
+      font-weight: 400;
+      align-items: center;
+      /*border-top: 2px solid #2e4361;*/
+      /*background-color: ;*/
+      padding: 1rem;
+      height:50rem; width:100rem;
+      margin-left:5rem;
+    }
     .fakeimg {
       height: 200px;
       background: #aaa;
@@ -32,93 +52,45 @@
   </style>
   <link href="static/css/headers.css" rel="stylesheet">
 
-
 </head>
 <body>
 <!--<header th:replace=""></header>-->
-<header class="p-3 bg-dark text-white">
-  <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" id="testo">
-      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-      </a>
+<th:block th:if="${session.mysessionmember==null}"}>
+  <div th:replace="fragments/Header.html :: header"></div>
+</th:block>
+<th:block th:if="${session.mysessionmember!=null}"}>
+  <div th:replace="fragments/LoginHeader.html :: Loginheader('boardContent/'+${board.id},'')"></div>
+</th:block>
 
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" >
-        <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-        <li><a href="/board" class="nav-link px-2 text-white">Board</a></li>
-        <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-        <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-      </ul>
-
-      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-      </form>
-
-      <div class="text-end">
-        <button type="button" class="btn btn-outline-light me-2" onclick="moveLogin();">Login</button>
-        <button type="button" class="btn btn-warning" onclick="moveJoin();">Sign-up</button>
-      </div>
-    </div>
-  </div>
-</header>
-<br>
-
-<div class="col-md-10 col-sm-10" align="center"/>
-<table border="1" width="1200px" >
-  <tr>
-    <td width="900px" th:text="'제목 : ' + ${board.title}">
-      제목:
-    </td>
-    <td th:text="'작성자 : ' + ${board.writer}">
-      작성자:
-    </td>
-  </tr>
-  <tr height="200px">
-    <td colspan="2" valign="top"  th:text="${board.content}">
-      게시글 내용
-    </td>
-  </tr>
-</table>
-<br>
-<br>
-</div>
+<div style="margin-left:5rem;"><h4 class="ed link text-bold" th:text="'제목 : ' + ${board.title}">덕락하네</h4></div>
+<div class="freestyle"  th:text="'작성자 : ' + ${board.writer}" >작성자</div>
+<div class="freestyle2"  th:text="${board.content}">호호호</div>
 
 <!--아래부터 댓글-->
-<div class="container" >
-  <div class="col-md-10 col-sm-10">
-    <div class="panel panel-info">
+    <div class="panel panel-info" style="margin: 5rem; width:100rem;">
       <div class="panel-heading">
         Comment panel
       </div>
 
       <div class="panel-body">
-
-<!--        <form action="/boardContent"  method="post">-->
-          <textarea class="form-control" placeholder="write a comment..." rows="3"  id="content" name="content"></textarea>
-          <br>
+        <textarea class="form-control" placeholder="write a comment..." rows="3"  id="content" name="content"></textarea>
+        <br>
         <input type="hidden" id="writer" th:value="${writer2}"/>
-<!--        <input type="hidden" id="writer" th:value="${board.writer}"/>-->
         <input type="hidden" id="boardid" th:value="${board.id}"/>
-          <button type="submit" id="Submit" class="btn btn-info pull-right">등록하기</button>
-            <div class="clearfix"></div>
-          <hr>
-<!--        </form>-->
+        <button type="submit" id="Submit" class="btn btn-info pull-right">등록하기</button>
+        <div class="clearfix"></div>
+        <hr>
 
 
-<!--&lt;!&ndash;        <form action="/boardReply"  method="post">&ndash;&gt;대댓글용도로한듯?-->
 <!--        //댓글출력-->
           <div id="rta">
           <div class="media" th:each="comment : ${comment}" >
-
             <th:block th:if="${comment.depth==0}">
-          <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇddddddddddddd if문해서 대댓글 댓글, select * from 댓글 order by 댓글번호, 대댓글번호-->
             <div class="media-left">
             </div>
             <div class="media-body">
               <h4 class="media-heading title" id="commentwriter" th:text="${comment.writer}" >comment death yo</h4>
               <input type="hidden" id="commentid" th:value="${comment.id}" >
-<!--              https://selfdevelope.tistory.com/120    id값주는거-->
                <input type="hidden" id="parentid" th:value="${comment.parentid}">
               <p class="komen" th:text="${comment.content}">
                 kalo bisa ya ndak usah gan biar cepet commentid숨김처리리<br>
@@ -127,7 +99,6 @@
             </th:block>
 
             <th:block th:if="${comment.depth==1}">
-              <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇddddddddddddd if문해서 대댓글 댓글, select * from 댓글 order by 댓글번호, 대댓글번호-->
               <div class="ml-5">
               <div class="media-left mt-3"></div>
               <div class="media-body mt-3">
@@ -138,23 +109,12 @@
                 <p class="komen" th:text="${comment.content}">
                   kalo bisa ya ndak usah gan biar cepet<br>
                 </p>
-                <button id="replie2" name="replie" type="button"  class="btn btn-primary">replyof</button><hr>
+                <button id="replie2" name="replie" type="button"  class="btn btn-primary">대댓글달기</button><hr>
               </div>
               </div>
             </th:block>
 
-          </div></div>
-<!--        </form>-->
-
-      </div></div></div></div>
-
-<table align="center" width="500" border="1" id="rtb" >
-  <thead>
-  <td colspan="4"><b id="rCount">댓글목록</b></td>
-  </thead>
-  <tbody >
-  </tbody>
-</table>
+          </div></div></div></div>
 
 <script>
   // 댓글 입력창
@@ -164,18 +124,8 @@
       url: "/boardContent",
       data: {"content": $("#content").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },//boardid값추가 1.26
       success: function (data) {
-        // getReplyList();
-        // console.log(data+"로그얌 ㅎㅎㅋㅋ");
-      //   if (data.result == "success") { //여기 if문동작안하는듯?
-      //     location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고
-      // alert("이거 발생되니");
-      //     console.log("버튼임니다 ㅎ ");
-      //     // getReplyList3();
-      //   }
         console.log(data+"data체크");
         getReplyList3();
-        // console.log(data.result+"데이타점리설트값이당");undefined값
-
       },
       error: function (request, status, error) {
         alert("에러러code: " + request.status + "\n" + "error: " + error);
@@ -198,13 +148,9 @@
 
       success : function(result) {
         $('#rta').replaceWith(result);
-        // console.log(result+"콘솔로그라능 ㅎㅎ");
       }
     })
 
-  //참고 여기서 위의 #rta에다가    넘어온 result값을붙이는거     #testo면 testo에 rta부분이 붙어짐,
-    // 불러오는순서나원리? 일부러/boardcontent해놓고 값넣어봐서 찾아봐도되고
-  //확인해보니 넘어올때 test값까지 다 넣어서옴     즉 댓글내용까지
   }
 
   //대댓글 입력창
@@ -240,11 +186,7 @@
             '<input type="hidden" name="writer"  id="repliewriter" value="'+cwriter+'">'+
             '<input type="hidden" name="boardid" id="replieboardid" value="'+boardid2+'">';
             '</form>';
-    //해당버튼댓글 부모의 값 id, 작성자등을 가져와서 하는식으로해보자  console.log찍어서함녀될듯
 
-     // alert(testid+"testid값");
-    // alert(cwriter+"cwriter값");
-    // console.log(temp.value()+"temp의 value인 id값")
     var prevTr = $(this).parent().parent().next();
     //부모의 부모 다음이 sub이면 마지막 sub 뒤에 붙인다.
     //마지막 리플 처리
@@ -270,7 +212,5 @@
 
 
 </script>
-
 </body>
-
 </html>

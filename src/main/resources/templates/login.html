@@ -90,6 +90,7 @@
 <!--      <p class="field-error" th:each="err : ${#fields.globalErrors()}"-->
 <!--         th:text="${err}">전체 오류 메시지</p>-->
 <!--    </div>-->
+            <h4>로그인화면</h4>
             <div th:if="${#fields.hasGlobalErrors()}">
                 <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                    th:text="${err}">글로벌 오류 메시지</p>
@@ -114,7 +115,7 @@
         <input type="checkbox" value="remember-me"> 다음에도 이 비밀번호를 기억
       </label>
     </div>
-    <div>
+    <div style="padding-bottom: 5px">
     <button class="w-75 btn btn-lg btn-primary" onclick="location.href='/'"
             type="submit">로그인</button>
     </div>

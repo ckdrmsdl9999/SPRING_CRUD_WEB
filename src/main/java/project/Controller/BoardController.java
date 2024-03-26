@@ -123,8 +123,6 @@ public class BoardController {
     public String Board(Model model,HttpServletRequest request){
         List<Board> board = boardRepository.findAll();
         model.addAttribute("board",board);
-        //세션이 존재하면-header loginheader선택할수있는걸로  "/boardcontent :: #rta";이렇게?
-        //  return "/boardcontent :: #rta"
         //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
         HttpSession session=request.getSession(false);
 //        System.out.print("세션체크:"+session.getAttribute("mysessionmember"));

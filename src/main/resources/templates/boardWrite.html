@@ -34,11 +34,16 @@
 </head>
 <body>
 
-<div th:replace="fragments/Header.html :: header"></div>
+<th:block th:if="${session.mysessionmember==null}"}>
+    <div th:replace="fragments/Header.html :: header(naming='write')"></div>
+</th:block>
+<th:block th:if="${session.mysessionmember!=null}"}>
+    <div th:replace="fragments/LoginHeader.html :: Loginheader('write','')"></div>
+</th:block>
+<!--<div th:replace="fragments/Header.html :: header"></div>-->
 <br>
 <div></div>
 <div class="container">
-
 
 <form action="/board" th:object="${board}" method="post">
     <h1 style="padding-left: 3rem; ">유저 게시판</h1>
