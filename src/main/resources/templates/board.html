@@ -16,9 +16,7 @@
     <div th:replace="fragments/LoginHeader.html :: Loginheader(null,'')"></div>
     </th:block>
 <div class="container my-3" >
-
     <div class="starter-template">
-
         <table class = "table" >
             <thead class = table-dark>
             <tr>
@@ -28,7 +26,6 @@
                 <th class="col-md-2">작성일</th>
                 <th class="col-md-2">조회수</th>
             </tr>
-
             </thead>
             <tr th:each="board : ${board}">
                 <td th:text="${board.id}"></td>
@@ -46,6 +43,18 @@
 <!--            &lt;!&ndash; 글쓰기 버튼 &ndash;&gt;-->
             <a style="float: right" class="btn btn-primary" th:href="@{/board/write}">글쓰기</a>
         </div>
+<!--dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
+<!--        (         (  * (int) Math.ceil( ( (double) pageable.getPageNumber() / blockLimit ) ) *    ) - 1      ) * blockLimit + 1; -->
+        <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+
+		<!-- 현재페이지는 링크 없이 숫자만 -->
+            <span th:if="${page == postsPages.number + 1}" th:text="${page}"></span>
+            <!-- 현재페이지 링크 X, 다른 페이지번호에는 링크를 보여준다 -->
+            <span th:unless="${page == postsPages.number + 1}">
+        <a th:href="@{/posts/paging(page=${page})}" th:text="${page}"></a>
+            </span>
+        </span>
+<!--ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
         <!-- 검색 form -->
         <form action="/board/search" method="GET">
             <div>

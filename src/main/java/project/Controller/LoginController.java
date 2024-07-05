@@ -94,8 +94,8 @@ import javax.servlet.http.Cookie;
         return "redirect:/";
     }
 
-       @GetMapping(value = {"/logout/board/{something}/{something2}","/logout/board/{something}"})//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
-        public String logoutForm5(@PathVariable(required = false) String something,
+    @GetMapping(value = {"/logout/board/{something}/{something2}","/logout/board/{something}"})//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
+    public String logoutForm5(@PathVariable(required = false) String something,
                                   @PathVariable(required = false) String something2,
                                   HttpServletRequest request, HttpServletResponse response, HttpSession session)
         {

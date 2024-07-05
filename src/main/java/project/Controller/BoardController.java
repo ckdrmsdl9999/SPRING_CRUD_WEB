@@ -2,6 +2,8 @@ package project.Controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,14 +28,14 @@ public class BoardController {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final ReplieRepository replieRepository;
-
+//PageRequest
     @ResponseBody        //이거 없애버려서 오류떳음 이걸왜붙일까->
     @GetMapping("/board/write2")//글쓰기 이동
     public List<Comment> BoardWrite2(@ModelAttribute Board board, BindingResult result)
     {
         List<Comment> comment = commentRepository.findAll();
         return comment;
-//        return "redirect:/comment";
+//      return "redirect:/comment";
     }
             //이거 없애버려서 오류떳음 이걸왜붙일까->
     @GetMapping("/board/write3")//댓글출력부분
@@ -46,6 +48,7 @@ public class BoardController {
 //        /boardcontent로하면 통으로붙음  #rta면 rta안에값만 붙음
 //        return "redirect:/comment";
     }
+
     @PostMapping("/boardContent")//댓글작성
     public String BoardContent(@ModelAttribute Comment comment, Model model){
         comment.setDepth((long)0);
@@ -101,12 +104,12 @@ public class BoardController {
         LoginForm loginForm = (LoginForm) httpSession.getAttribute("mysessionmember");
         System.out.print("게시판확인"+loginForm.getLoginId());
         board.setViewcount((long)0);
-
         board.setWriter(loginForm.getLoginId());
         Member member = memberRepository.findByLoginId(loginForm.getLoginId()).orElse(null);
         board.setMember(member);//외래키~~
 
         boardRepository.save(board);
+
         return "redirect:/board";
     }
 //    @GetMapping("/board")//게시판출력
@@ -118,7 +121,18 @@ public class BoardController {
 //        //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
 //        return "board";
 //    }
-
+//@GetMapping("/board")//게시판출력
+//public String Board(Model model,HttpServletRequest request){
+//    List<Board> board = boardRepository.findAll();
+//    model.addAttribute("board",board);
+//    //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
+//    HttpSession session=request.getSession(false);
+////        System.out.print("세션체크:"+session.getAttribute("mysessionmember"));
+//    if(session==null){System.out.println("세션이없음세션이없음세션이없음세션이없음세션이없음세션이없음");
+//        return "board";}
+//    return "board";
+//}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/board")//게시판출력
     public String Board(Model model,HttpServletRequest request){
         List<Board> board = boardRepository.findAll();
