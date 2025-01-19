@@ -2,8 +2,10 @@ package project.Controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import project.Repository.BoardRepository;
 import project.Repository.CommentRepository;
 import project.Repository.MemberRepository;
 import project.Repository.ReplieRepository;
+import project.Service.Pagination;
 import project.domain.*;
 
 import javax.servlet.http.Cookie;
@@ -121,29 +124,56 @@ public class BoardController {
 //        //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
 //        return "board";
 //    }
-//@GetMapping("/board")//게시판출력
-//public String Board(Model model,HttpServletRequest request){
-//    List<Board> board = boardRepository.findAll();
-//    model.addAttribute("board",board);
-//    //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
-//    HttpSession session=request.getSession(false);
-////        System.out.print("세션체크:"+session.getAttribute("mysessionmember"));
-//    if(session==null){System.out.println("세션이없음세션이없음세션이없음세션이없음세션이없음세션이없음");
-//        return "board";}
-//    return "board";
-//}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @GetMapping("/board")//게시판출력
-    public String Board(Model model,HttpServletRequest request){
-        List<Board> board = boardRepository.findAll();
+    public String Board(Model model, HttpServletRequest request, @PageableDefault(size = 10,page=5)Pageable pageable){
+        int offset=0; int limit=5;
+        List<Board> board = boardRepository.findAll(pageable,offset,limit);
+        System.out.println("사이즈테스트:"+pageable.getPageSize()+"사이즈테스트2:"+pageable.getPageNumber());//10,5
+
+//        Page<Dto> pageData = null;
+//        pageData = service.getBoardList(form.getPageNo(), form.getPageSize(), form);
+//
+//        Page<Dto> pageData = null;
+//        pageData = service.getBoardList(form.getPageNo(), form.getPageSize(), form);
+
+//        Page<BoDard> dto=board.map(a->new Board());               //새로운코드시험중
+//PageRequest
+//        List<Board> board = boardRepository.findAll(page
+// able,offset,limit);
+//        int a=model.getAttribute("pagenum");
+        int page=pageable.getPageNumber()-1;
+        int pageLimit=3;
+//        Page<Board> postPages; postPages.getNumber()
+//                postPages.nu
+//                        System.out.print(postPages.getNumber()); PageRequest
+        model.addAttribute("startPage",2);
+//        model.addAttribute(postPages,postpage);
+        model.addAttribute("endPage",5);
         model.addAttribute("board",board);
         //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
         HttpSession session=request.getSession(false);
-//        System.out.print("세션체크:"+session.getAttribute("mysessionmember"));
+    //        System.out.print("세션체크:"+session.getAttribute("mysessionmember"));
         if(session==null){System.out.println("세션이없음세션이없음세션이없음세션이없음세션이없음세션이없음");
             return "board";}
         return "board";
+    //    PageRequest
     }
+//    int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+//    int endPage = Math.min((startPage + blockLimit - 1), postsPages.getTotalPages());
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    @GetMapping("/board")//게시판출력
+//    public String Board(Model model,HttpServletRequest request){
+//        List<Board> board = boardRepository.findAll();
+//        model.addAttribute("board",board);
+//        //붙이는게날까 아니면 board, loginboard이렇게 따로놓는게 나을까
+//        HttpSession session=request.getSession(false);
+////        System.out.print("세션체크:"+session.getAttribute("mysessionmember"));
+//        if(session==null){System.out.println("세션이없음세션이없음세션이없음세션이없음세션이없음세션이없음");
+//            return "board";}
+//        return "board";
+//    }
+
 
 
 //    /* 게시글 목록 */

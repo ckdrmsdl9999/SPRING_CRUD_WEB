@@ -8,7 +8,6 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
     <body >
-
     <th:block th:if="${session.mysessionmember==null}"}>
         <div th:replace="fragments/Header.html :: header"></div>
     </th:block>
@@ -19,13 +18,13 @@
     <div class="starter-template">
         <table class = "table" >
             <thead class = table-dark>
-            <tr>
+            <trtm>
                 <th class="col-md-1">번호</th>
                 <th class="col-md-5" text-center>제목</th>
                 <th class="col-md-3">작성자</th>
                 <th class="col-md-2">작성일</th>
                 <th class="col-md-2">조회수</th>
-            </tr>
+            </trtm>
             </thead>
             <tr th:each="board : ${board}">
                 <td th:text="${board.id}"></td>
@@ -45,16 +44,47 @@
         </div>
 <!--dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
 <!--        (         (  * (int) Math.ceil( ( (double) pageable.getPageNumber() / blockLimit ) ) *    ) - 1      ) * blockLimit + 1; -->
-        <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+        <!-- 페이지영역 -->
+        <div class="paging_wrap">
+            <a th:if="${page.hasFirstPageNav}==true" class="page first" th:with="url_first=${form.makeQString(1)}" th:href="@{${url_first}}">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a th:if="${page.hasPreviousPageNav}==true" class="page prev" th:with="url_prev=${form.makeQString(page.firstPageNo-1)}" th:href="@{${url_prev}}">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            <th:block th:each="pageNum: ${#numbers.sequence(page.firstPageNo, page.lastPageNo)}">
+                <a th:with="url=${form.makeQString(pageNum)}" th:href="@{${url}}" th:class="${pageNum}==${page.pageNum} ? 'on' : ''" th:text="${pageNum}"></a>
+            </th:block>
+            <a th:if="${page.hasNextPageNav}==true" class="page next" th:with="url_next=${form.makeQString(page.lastPageNo + 1)}" th:href="@{${url_next}}">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            <a th:if="${page.hasLastPageNav}==true" class="page last" th:with="url_last=${form.makeQString(page.totalPage)}" th:href="@{${url_last}}">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+        </div>
+<!--        출처: https://pparkseona.tistory.com/entry/게시판-페이지-구현하기-자바sts로-페이징-처리하기 [Hello sunny Worlds!:티스토리]-->
+<!--        <span th:each="pager: ${#numbers.sequence(startPage, endPage)}">-->
+<!--&lt;!&ndash;        <div th:text="${startPage}"></div>    <div th:text="${endPage}"></div>&ndash;&gt;-->
+<!--		&lt;!&ndash; 현재페이지는 링크 없이 숫자만 &ndash;&gt;-->
+<!--&lt;!&ndash;            <span th:if="${page == postsPages.number + 1}" th:text="${page}"></span>&ndash;&gt;-->
+<!--            <span th:text="${pager}"></span>-->
+<!--&lt;!&ndash;            &lt;!&ndash; 현재페이지 링크 X, 다른 페이지번호에는 링크를 보여준다 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <span th:unless="${page == postsPages.number + 1}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <a th:href="@{/posts/paging(page=${page})}" th:text="${page}"></a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </span>&ndash;&gt;-->
+<!--        </span>-->
 
-		<!-- 현재페이지는 링크 없이 숫자만 -->
-            <span th:if="${page == postsPages.number + 1}" th:text="${page}"></span>
-            <!-- 현재페이지 링크 X, 다른 페이지번호에는 링크를 보여준다 -->
-            <span th:unless="${page == postsPages.number + 1}">
-        <a th:href="@{/posts/paging(page=${page})}" th:text="${page}"></a>
-            </span>
-        </span>
-<!--ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
+<!--        <div class="center text-center">-->
+<!--            <nav aria-label="Page navigation example">-->
+<!--                <ul class="pagination justifiy-content-center" th:if="${totalPage != 0}">-->
+<!--                    <li class="page-item"><a class="page-link" th:href="@{/board/boardList(page=${boards.pageable.pageNumber - 1}, searchText=${param.searchText})}">Previous</a></li>-->
+<!--                    <li class="" th:classappend="${page == boards.pageable.pageNumber + 1} ? 'disabled'" th:each="page : ${#numbers.sequence(startPage, endPage)}">-->
+<!--                        <a th:href="@{/board/boardList(page=${page - 1}, searchText=${param.searchText})}" th:text="${page}"></a>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"><a class="page-link" th:href="@{/board/boardList(page=${boards.pageable.pageNumber + 1}, searchText=${param.searchText})}">Next</a></li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+<!--        </div>-->
         <!-- 검색 form -->
         <form action="/board/search" method="GET">
             <div>

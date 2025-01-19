@@ -21,10 +21,7 @@ import java.util.Map;
 @Repository
 @Slf4j
 @AllArgsConstructor
-public class BoardRepository
-        //extends JpaRepository<Board,Long>
-        //        extends CrudRepository<Board,Long>
-
+public class BoardRepository//extends JpaRepository<Board,Long>//        extends CrudRepository<Board,Long>
 {
     private static final List<Board> aa = new ArrayList<>();//임시 db
     private final EntityManager em;
@@ -33,23 +30,30 @@ public class BoardRepository
 //        int pageLimit = 3; // 한페이지에 보여줄 글 개수
 //        // 한 페이지당 3개식 글을 보여주고 정렬 기준은 ID기준으로 내림차순
 //        Page<Posts> postsPages = postsRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Direction.DESC, "id")));
-//    public Page<Board> findByBnoGreaterThan(Long bno, Pageable paging);
+//    public Page<Board> findByBnoGreaterThan(Long bno, Pagedable paging);
     @Transactional
     public void save(Board board)
     {
         em.persist(board);
     }
+
     public Board findOne(Long id)
     {
         return em.find(Board.class,id);
     }
+
     public List<Board> findById(Integer id)
     {
-        return em.createQuery("select m from Board m where m.id= :id",Board.class).
-                setParameter("id",id).getResultList();
+        return em.createQuery("select m from Board m where m.id= :id",Board.class).setParameter("id",id).getResultList();
     }
 
-    public List<Board> findAll() {
-        return em.createQuery("select m from Board m").getResultList(); }
+    public List<Board> findAll(Pageable pagable, int offset, int limit) {
+        return em.createQuery("select m from Board m").setFirstResult(offset).setMaxResults(limit).getResultList(); }
+
+//    public List<Board> findAll(Pageable pagable, int offset, int limit) {  //요게진짜
+//        return em.createQuery("select m from Board m").setFirstResult(offset).setMaxResults(limit).getResultList(); }
+
+//    public List<Board> findAll(Pageable pagable) {
+//        return em.createQuery("select m from Board m").getResultList(); }
 
 }

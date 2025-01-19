@@ -26,7 +26,6 @@ public class HomeController {
 //        Object form=null; form=session.getAttribute("mysessionmember");
         LoginForm form=(LoginForm) session.getAttribute("mysessionmember");
 
-
         log.info("로그인성공전 들어간다."+form);
         if (form == null) { return "home"; }
         //로그인
