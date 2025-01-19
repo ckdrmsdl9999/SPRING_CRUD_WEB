@@ -25,16 +25,40 @@ public class BoardRepository//extends JpaRepository<Board,Long>//        extends
 {
     private static final List<Board> aa = new ArrayList<>();//임시 db
     private final EntityManager em;
-//    public Page<PostsResponseDto> paging(Pageable pageable) {
-//        int page = pageable.getPageNumber() - 1; // page 위치에 있는 값은 0부터 시작한다.
-//        int pageLimit = 3; // 한페이지에 보여줄 글 개수
-//        // 한 페이지당 3개식 글을 보여주고 정렬 기준은 ID기준으로 내림차순
-//        Page<Posts> postsPages = postsRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Direction.DESC, "id")));
-//    public Page<Board> findByBnoGreaterThan(Long bno, Pagedable paging);
+
     @Transactional
     public void save(Board board)
     {
         em.persist(board);
+    }
+
+//    @Transactional
+//    public void update(Board board)
+//    {
+////        return em.createQuery("update Board m Set m.id=:id, m.writer=:writer,m.content= :content",Board.class).setParameter("id",board.getId()).getResultList();
+//    }
+    @Transactional
+    public void updateBoard(Board board) {
+//        System.out.println("DB값1차확인"+board.getId()+board.getContent()+" "+board.getId());
+//        Board board2 = em.find(Board.class, board.getId());
+//        System.out.println("DB값2차확인"+board2.getTitle()+board2.getContent()+" "+board2.getId());
+     //   if (board != null) {
+//            board.setTitle(board.getTitle());
+//            board.setContent(board.getContent());
+//            board.setUpdatedAt(LocalDateTime.now()); // 업데이트 시간 갱신
+//            em.merge(board); // 변경된 데이터 저장
+        em.createQuery("UPDATE Board m SET m.title = :title, m.content = :content WHERE m.id = :id")
+                .setParameter("title", board.getTitle())
+                .setParameter("content", board.getContent())
+                .setParameter("id", board.getId())
+                .executeUpdate(); // 업데이트된 행의 개수 반환
+        // }
+    }
+    @Transactional
+    public void deleteById(Board board) {
+        em.createQuery("DELETE FROM Board m WHERE m.id = :id")
+                .setParameter("id", board.getId())
+                .executeUpdate(); // 삭제된 행(row) 개수 반환
     }
 
     public Board findOne(Long id)
@@ -50,10 +74,6 @@ public class BoardRepository//extends JpaRepository<Board,Long>//        extends
     public List<Board> findAll(Pageable pagable, int offset, int limit) {
         return em.createQuery("select m from Board m").setFirstResult(offset).setMaxResults(limit).getResultList(); }
 
-//    public List<Board> findAll(Pageable pagable, int offset, int limit) {  //요게진짜
-//        return em.createQuery("select m from Board m").setFirstResult(offset).setMaxResults(limit).getResultList(); }
 
-//    public List<Board> findAll(Pageable pagable) {
-//        return em.createQuery("select m from Board m").getResultList(); }
 
 }

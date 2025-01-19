@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .textcontrol {
+            border: 1.5px rgb(68, 136, 244) solid;
+            width: 500px;
+            height: 400px;
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-top: 10px;
+            resize: none;
+            /*position: fixed;*/
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            width: 100px;
+            color: white;
+            padding: 10px 10px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 6px;
+
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<th:block th:if="${session.mysessionmember==null}"}>
+    <div th:replace="fragments/Header.html :: header(naming='write')"></div>
+</th:block>
+<th:block th:if="${session.mysessionmember!=null}"}>
+    <div th:replace="fragments/LoginHeader.html :: Loginheader('write','')"></div>
+</th:block>
+<!--<div th:replace="fragments/Header.html :: header"></div>-->
+<br>
+<div></div>
+<div class="container">
+
+    <form action="/boardedit" th:object="${board}" method="post">
+        <h1 style="padding-left: 3rem; ">유저 게시판</h1>
+<!--        <div class="freestyle"  th:text="'작성자 : ' + ${board.writer}" >작성자</div>//////////-->
+        <div class="form-group" style="padding-left: 3rem;  position: relative" >
+         <input type="hidden" id="boardId9" name="id" th:value="${board.id}" />
+            <input type="text" th:field="*{title}"  placeholder="수정할 제목을 입력하세요" style="width:500px; height: 30px;  " >
+        </div>
+        <br>
+
+        <div class="comment-form" style="padding-left: 3rem;">
+            <textarea th:field="*{content}" id="content" name="content" class="textcontrol"
+                      rows="3"></textarea>
+        </div>
+
+        <div style="padding-left: 28rem; ">
+            <button type="submit"  onclick="location.href='boardedit'">작성</button>
+        </div>
+
+    </form>
+</div>
+</body>
+
+</html>

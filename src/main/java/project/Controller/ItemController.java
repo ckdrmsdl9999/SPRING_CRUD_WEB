@@ -38,14 +38,6 @@ public class ItemController {
 
         System.out.println(item.getItemname()+" "+item.getPrice()+" "+item.getQuantity());
         itemRepository.save(item);
-//
-//        List<Item> items = itemRepository.findAll();
-//        model.addAttribute("items",items);
-
-//        return "items";//"/"는안되네 왜 postmapping에서 getmapping/items로 넘어가는값이없으니까->finall잇는데?
-        //redirect안하면 로그인도 변동이없는건가? html파일만호출하고  -->지금보니 네트워크에서 요청url은 items2임, pritn문도 안보이고 return에선
-        // getmapping의 컨트롤러단에는안가는건가? return문은 컨트롤러호출이아니라 ..
-        //그럼 이런데서 return loginhome하면 쿠키값안뜰수도있게되나? 확인해보고      그리고 redirect인경우에는 컨트롤러호출? get요청으로? 다시고민해보기
          return "redirect:/items";
     }
 
@@ -53,9 +45,6 @@ public class ItemController {
     @GetMapping("/addForm")
     public String itemAdd(@ModelAttribute("item") Item item){
         System.out.println("에드폼");
-//        itemRepository.save(item);
-//        List<Item> items = itemRepository.findAll();
-//        model.addAttribute("items",items);
 
         return "addForm";
 

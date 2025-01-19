@@ -17,31 +17,26 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class HomeController {
     private final MemberRepository memberRepository;
-    @GetMapping("/") //requestmapping으로해도 무방
+
+    @GetMapping("/")
     public String homeLogin(@CookieValue(value = "memberId",required = false) String memberId,
                             Model model, HttpSession session,HttpServletRequest request) {
-//        public String homeLogin(@CookieValue(value = "memberId",required = false) String memberId, Model model,
-//                HttpServletRequest request) {
         session=request.getSession(false);
-//        Object form=null; form=session.getAttribute("mysessionmember");
         LoginForm form=(LoginForm) session.getAttribute("mysessionmember");
 
         log.info("로그인성공전 들어간다."+form);
         if (form == null) { return "home"; }
-        //로그인
+
         Member loginMember = memberRepository.findByLoginId(form.getLoginId()).orElse(null);
-//        System.out.println("나온값:"+loginMember.getUsername());
-//        if (loginMember == null) { log.info("null이얌 ㅠㅠ.");
-//            return "home";
-//        }
+
        log.info("로그인성공후 들어간다.");
         model.addAttribute("member", loginMember);
         return "loginhome";
     }
-    @GetMapping("/test") //requestmapping으로해도 무방
+    @GetMapping("/test")
     public String test()
     {
-        return "testpage";
+        return "boardEdit";
     }
 
     }

@@ -34,57 +34,11 @@
                 <td th:text="${board.viewcount}"></td>
             </tr>
         </table>
-        <!-- Pagination -->
         <div style="margin: 10px">
-<!--            <span th:each="pageNum : ${pageList}" th:inline="text">-->
-<!--                <a th:href="@{'/board/list/?page=' + ${pageNum}}">[[${pageNum}]]</a>-->
-<!--            </span>-->
 <!--            &lt;!&ndash; 글쓰기 버튼 &ndash;&gt;-->
             <a style="float: right" class="btn btn-primary" th:href="@{/board/write}">글쓰기</a>
         </div>
-<!--dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
-<!--        (         (  * (int) Math.ceil( ( (double) pageable.getPageNumber() / blockLimit ) ) *    ) - 1      ) * blockLimit + 1; -->
-<!--        &lt;!&ndash; 페이지영역 &ndash;&gt;-->
-<!--        <div class="paging_wrap">-->
-<!--            <a th:if="${page.hasFirstPageNav}==true" class="page first" th:with="url_first=${form.makeQString(1)}" th:href="@{${url_first}}">-->
-<!--                <i class="fas fa-angle-double-left"></i>-->
-<!--            </a>-->
-<!--            <a th:if="${page.hasPreviousPageNav}==true" class="page prev" th:with="url_prev=${form.makeQString(page.firstPageNo-1)}" th:href="@{${url_prev}}">-->
-<!--                <i class="fas fa-angle-left"></i>-->
-<!--            </a>-->
-<!--            <th:block th:each="pageNum: ${#numbers.sequence(page.firstPageNo, page.lastPageNo)}">-->
-<!--                <a th:with="url=${form.makeQString(pageNum)}" th:href="@{${url}}" th:class="${pageNum}==${page.pageNum} ? 'on' : ''" th:text="${pageNum}"></a>-->
-<!--            </th:block>-->
-<!--            <a th:if="${page.hasNextPageNav}==true" class="page next" th:with="url_next=${form.makeQString(page.lastPageNo + 1)}" th:href="@{${url_next}}">-->
-<!--                <i class="fas fa-angle-right"></i>-->
-<!--            </a>-->
-<!--            <a th:if="${page.hasLastPageNav}==true" class="page last" th:with="url_last=${form.makeQString(page.totalPage)}" th:href="@{${url_last}}">-->
-<!--                <i class="fas fa-angle-double-right"></i>-->
-<!--            </a>-->
-<!--        </div>-->
-<!--        출처: https://pparkseona.tistory.com/entry/게시판-페이지-구현하기-자바sts로-페이징-처리하기 [Hello sunny Worlds!:티스토리]-->
-<!--        <span th:each="pager: ${#numbers.sequence(startPage, endPage)}">-->
-<!--&lt;!&ndash;        <div th:text="${startPage}"></div>    <div th:text="${endPage}"></div>&ndash;&gt;-->
-<!--		&lt;!&ndash; 현재페이지는 링크 없이 숫자만 &ndash;&gt;-->
-<!--&lt;!&ndash;            <span th:if="${page == postsPages.number + 1}" th:text="${page}"></span>&ndash;&gt;-->
-<!--            <span th:text="${pager}"></span>-->
-<!--&lt;!&ndash;            &lt;!&ndash; 현재페이지 링크 X, 다른 페이지번호에는 링크를 보여준다 &ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            <span th:unless="${page == postsPages.number + 1}">&ndash;&gt;-->
-<!--&lt;!&ndash;        <a th:href="@{/posts/paging(page=${page})}" th:text="${page}"></a>&ndash;&gt;-->
-<!--&lt;!&ndash;            </span>&ndash;&gt;-->
-<!--        </span>-->
 
-<!--        <div class="center text-center">-->
-<!--            <nav aria-label="Page navigation example">-->
-<!--                <ul class="pagination justifiy-content-center" th:if="${totalPage != 0}">-->
-<!--                    <li class="page-item"><a class="page-link" th:href="@{/board/boardList(page=${boards.pageable.pageNumber - 1}, searchText=${param.searchText})}">Previous</a></li>-->
-<!--                    <li class="" th:classappend="${page == boards.pageable.pageNumber + 1} ? 'disabled'" th:each="page : ${#numbers.sequence(startPage, endPage)}">-->
-<!--                        <a th:href="@{/board/boardList(page=${page - 1}, searchText=${param.searchText})}" th:text="${page}"></a>-->
-<!--                    </li>-->
-<!--                    <li class="page-item"><a class="page-link" th:href="@{/board/boardList(page=${boards.pageable.pageNumber + 1}, searchText=${param.searchText})}">Next</a></li>-->
-<!--                </ul>-->
-<!--            </nav>-->
-<!--        </div>-->
         <!-- 검색 form -->
         <form action="/board/search" method="GET">
             <div>
@@ -96,37 +50,5 @@
     </div>
 </div>
 
-<!--    <script>-->
-<!--        // 댓글 입력창-->
-<!--        $(document).on("click","button[id='Submit']",function(){ //동적 이벤트-->
-<!--            $.ajax({-->
-<!--                type: "post",-->
-<!--                url: "/boardContent",-->
-<!--                data: {"content": $("#content").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },//boardid값추가 1.26-->
-<!--                success: function (data) {-->
-<!--                    // getReplyList();-->
-<!--                    // console.log(data+"로그얌 ㅎㅎㅋㅋ");-->
-<!--                    //   if (data.result == "success") { //여기 if문동작안하는듯?-->
-<!--                    //     location.reload();    //이거지워보고 밑에 버튼임니다 되나 어떤기능하는지 비교해보기 주석햇다안햇다 다하면이거지우고-->
-<!--                    // alert("이거 발생되니");-->
-<!--                    //     console.log("버튼임니다 ㅎ ");-->
-<!--                    //     // getReplyList3();-->
-<!--                    //   }-->
-<!--                    console.log(data+"data체크");-->
-<!--                    getReplyList3();-->
-<!--                    // console.log(data.result+"데이타점리설트값이당");undefined값-->
-
-<!--                },-->
-<!--                error: function (request, status, error) {-->
-<!--                    alert("에러러code: " + request.status + "\n" + "error: " + error);-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-
-<!--        $(document).ready(function(){-->
-<!--            console.log("document 임니다 ㅎ ");-->
-<!--            // getReplyList();-->
-<!--        });-->
-<!--    </script>-->
     </body>
 </html>

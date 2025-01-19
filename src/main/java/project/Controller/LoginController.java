@@ -38,10 +38,8 @@ import javax.servlet.http.Cookie;
     public String createMember(@Validated @ModelAttribute("member") Member member, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             System.out.print("error바인딩출력:"+bindingResult);
-//           bindingResult.rejectValue("username","NotEmpty");
-//            return "memberJoin";
             }
-////        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
+
         if (!StringUtils.hasText(member.getPassword())) {
             bindingResult.addError(new FieldError("member","password","패스워드문제라능"));
             bindingResult.addError(new ObjectError("member","글로벌메시지라능"));
@@ -58,8 +56,7 @@ import javax.servlet.http.Cookie;
     @PostMapping("/login")
     public String login(@ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletResponse response,
                         RedirectAttributes redirectAttributes, HttpServletRequest request,HttpSession session) {
-//        sessionManager.createSession(form,response);
-//        HttpSession session = request.getSession();
+
         session.setAttribute("mysessionmember",form);
 
         if (bindingResult.hasErrors()) {
@@ -81,7 +78,7 @@ import javax.servlet.http.Cookie;
         return "redirect:/";
     }
 
-    @GetMapping("/logout")//requestmapping으로하면 패킷에는 어떻게 뜰까, postmapping쓸때와차이는? 해결후삭제
+    @GetMapping("/logout")
     public String logoutForm(HttpServletRequest request, HttpServletResponse response,HttpSession session)
     {
 //        expireCookie("mysessionname",response);
@@ -99,7 +96,7 @@ import javax.servlet.http.Cookie;
                                   @PathVariable(required = false) String something2,
                                   HttpServletRequest request, HttpServletResponse response, HttpSession session)
         {
-            //       expireCookie("mysessionname",response);
+
             System.out.println("something은뭘까"+something+"something2은뭘까"+something2);
 
 
@@ -121,7 +118,7 @@ import javax.servlet.http.Cookie;
 
     void expireCookie(String cookiename ,HttpServletResponse response){
         Cookie cookie = new Cookie(cookiename,"5");
-        cookie.setMaxAge(0);//-1이면 브라으주종료시만료
+        cookie.setMaxAge(0);//-1이면 브라우져종료시만료
         response.addCookie(cookie);
     }
 

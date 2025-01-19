@@ -14,14 +14,13 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class ReplieRepository {
-    EntityManager em; //final 안붙이니까 nullpointerexception뜨는데?. 생성자 생성안되서 그럼 @RequiredArgsConstructor는 finalaksgownsl
+    EntityManager em;
 
 
     public List<Replie> findAll(){//null값대비
         return em.createQuery("select m from Replie m").getResultList();
     }
 
-    //    List<Comment> findAll();
     @Transactional
     public void save(Replie replie){
         em.persist(replie);

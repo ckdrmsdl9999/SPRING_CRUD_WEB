@@ -13,12 +13,11 @@ import java.util.*;
 public class MemberRepository {
 
     private static Map<Long, Member> store = new HashMap<>(); //static 사용
-    private static long sequence = 0L; //static 사용
+    private static long sequence = 0L;
 
     private final EntityManager em;
 
     public void saveMember(Member member){
-//        member.setUsername("ki");
         em.persist(member);
     }//DB에 MEMBER저장
 
@@ -26,7 +25,7 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
 
-    public List<Member> findAll(){///////////////////
+    public List<Member> findAll(){//
         return em.createQuery("select m from Member m")
                 .getResultList();
     }

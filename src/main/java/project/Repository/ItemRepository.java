@@ -18,7 +18,7 @@ public class ItemRepository {
 
     private final EntityManager em;
 
-    @Transactional//여기다 하면 어떻게 진행되는지알기
+    @Transactional
     public void save(Item item) { em.persist(item);}
 
     public List<Item> findByName(String itemname) {
@@ -29,10 +29,7 @@ public class ItemRepository {
         return em.createQuery("select m from Item m").getResultList(); }
 
     public void update(Long itemId, Item updateParam) {
-//        Item findItem = findById(itemId);
-//        findItem.setItemName(updateParam.getItemName());
-//        findItem.setPrice(updateParam.getPrice());
-//        findItem.setQuantity(updateParam.getQuantity());
+
         em.createQuery
         ("update Item m set m.itemname = :name, m.price=:price, m.quantity=:quantity" +
         " where m.id=:id").setParameter("name",updateParam.getItemname()).

@@ -64,7 +64,32 @@
 
 <div style="margin-left:5rem;"><h4 class="ed link text-bold" th:text="'제목 : ' + ${board.title}">덕락하네</h4></div>
 <div class="freestyle"  th:text="'작성자 : ' + ${board.writer}" >작성자</div>
-<div class="freestyle2"  th:text="${board.content}">호호호</div>
+<div class="freestyle2"  th:text="${board.content}">에러났음</div>
+<div>
+  <div class="text-center" style="margin-top: 1rem;">
+<!--    <a class="btn btn-info" th:href="@{/board/edit}">수정하기</a>-->
+
+    <form th:action="@{/board/edit}" th:object="${board}" method="get">
+<!--      <form th:action="@{/board/edit/{id}(id=${board.id})}" th:object="${board}" method="get">-->
+      <input type="hidden" id="boardId9" name="id" th:value="${board.id}" />
+<!--        <input type="hidden" th:value="*{id}"  placeholder="제목을 입력하세요"-->
+<!--               style="width:500px; height: 30px;  " >-->
+<!--      <input type="hidden" id="boardid2" th:value="${board.id}"/>-->
+      <button type="submit"  class="btn btn-info" href="/board/edit" >수정하기</button>
+
+
+    </form>
+    <form th:action="@{/board/delete}" th:object="${board}" method="get">
+<!--    <form action="/board/delete" th:object="${board}" method="get">-->
+      <input type="hidden" id="boardId8" name="id" th:value="${board.id}" />
+      <button type="submit"  class="btn btn-info" href="/board/delete">삭제하기</button>
+    </form>
+<!--    <button type="submit" id="Submit2" class="btn btn-info" href="/board/edit">수정하기</button>-->
+
+  </div>
+
+
+</div>
 
 <!--아래부터 댓글-->
     <div class="panel panel-info" style="margin: 5rem; width:100rem;">
@@ -75,6 +100,7 @@
       <div class="panel-body">
         <textarea class="form-control" placeholder="write a comment..." rows="3"  id="content" name="content"></textarea>
         <br>
+<!--        <input type="hidden" id="writer" th:value="${writer2}"/>-->
         <input type="hidden" id="writer" th:value="${writer2}"/>
         <input type="hidden" id="boardid" th:value="${board.id}"/>
         <button type="submit" id="Submit" class="btn btn-info pull-right">등록하기</button>
@@ -94,7 +120,7 @@
                <input type="hidden" id="parentid" th:value="${comment.parentid}">
               <p class="komen" th:text="${comment.content}">
                 kalo bisa ya ndak usah gan biar cepet commentid숨김처리리<br>
-              </p> <button id="replie" name="replie" type="button"  class="btn btn-primary">reply</button><hr>
+              </p> <button id="replie" name="replie" type="button"  class="btn btn-primary">댓글달기</button><hr>
             </div>
             </th:block>
 
@@ -117,7 +143,7 @@
           </div></div></div></div>
 
 <script>
-  // 댓글 입력창
+  // 댓글 입력
   $(document).on("click","button[id='Submit']",function(){ //동적 이벤트
     $.ajax({
       type: "post",
@@ -128,10 +154,43 @@
         getReplyList3();
       },
       error: function (request, status, error) {
-        alert("에러러code: " + request.status + "\n" + "error: " + error);
+        alert("댓글에러: " + request.status + "\n" + "error: " + error);
       }
     });
   });
+  // 게시글수정
+  $(document).on("click","button[id='Submit2']",function(){
+    $.ajax({
+      type: "get",
+      url: "/board/edit",
+      data: { "content": $("#content").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val()},
+      success: function (data) {
+        console.log(data+"data체크");
+
+      },
+      error: function (request, status, error) {
+        alert("수정에러: " + request.status + "\n" + "error: " + error);
+      }
+    });
+  });
+  //게시글 삭제
+  $(document).on("click","button[id='Submit3']",function(){
+    $.ajax({
+      type: "post",
+      url: "/board/delete",
+      data: {"content": $("#content").val(), "writer": $("#writer").val(),"boardid": $("#boardid").val(), },
+      success: function (data) {
+        console.log(data+"data체크");
+        getReplyList3();
+      },
+      error: function (request, status, error) {
+        alert("삭제에러: " + request.status + "\n" + "error: " + error);
+      }
+    });
+  });
+
+
+
 
   $(document).ready(function(){
     console.log("document 임니다 ㅎ ");
