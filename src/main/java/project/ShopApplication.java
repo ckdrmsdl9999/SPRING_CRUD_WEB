@@ -34,16 +34,16 @@ public class ShopApplication implements WebMvcConfigurer {
         configurer.setUrlPathHelper(urlPathHelper);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TestIntercepter())
-                .order(1)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/css/**", "/*.ico", "/error");
-        registry.addInterceptor(new LoginCheckInterCepter())
-                .order(2)
-                .addPathPatterns("/board/write")
-                .excludePathPatterns("/css/**", "/*.ico", "/error");
-
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new TestIntercepter())
+//                .order(1)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/css/**", "/*.ico", "/error");
+//        registry.addInterceptor(new LoginCheckInterCepter())
+//                .order(2)
+//                .addPathPatterns("/board/write")
+//                .excludePathPatterns("/css/**", "/*.ico", "/error");
+//
+//    }
 }

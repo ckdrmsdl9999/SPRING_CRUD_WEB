@@ -44,24 +44,24 @@
         </div>
 <!--dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
 <!--        (         (  * (int) Math.ceil( ( (double) pageable.getPageNumber() / blockLimit ) ) *    ) - 1      ) * blockLimit + 1; -->
-        <!-- 페이지영역 -->
-        <div class="paging_wrap">
-            <a th:if="${page.hasFirstPageNav}==true" class="page first" th:with="url_first=${form.makeQString(1)}" th:href="@{${url_first}}">
-                <i class="fas fa-angle-double-left"></i>
-            </a>
-            <a th:if="${page.hasPreviousPageNav}==true" class="page prev" th:with="url_prev=${form.makeQString(page.firstPageNo-1)}" th:href="@{${url_prev}}">
-                <i class="fas fa-angle-left"></i>
-            </a>
-            <th:block th:each="pageNum: ${#numbers.sequence(page.firstPageNo, page.lastPageNo)}">
-                <a th:with="url=${form.makeQString(pageNum)}" th:href="@{${url}}" th:class="${pageNum}==${page.pageNum} ? 'on' : ''" th:text="${pageNum}"></a>
-            </th:block>
-            <a th:if="${page.hasNextPageNav}==true" class="page next" th:with="url_next=${form.makeQString(page.lastPageNo + 1)}" th:href="@{${url_next}}">
-                <i class="fas fa-angle-right"></i>
-            </a>
-            <a th:if="${page.hasLastPageNav}==true" class="page last" th:with="url_last=${form.makeQString(page.totalPage)}" th:href="@{${url_last}}">
-                <i class="fas fa-angle-double-right"></i>
-            </a>
-        </div>
+<!--        &lt;!&ndash; 페이지영역 &ndash;&gt;-->
+<!--        <div class="paging_wrap">-->
+<!--            <a th:if="${page.hasFirstPageNav}==true" class="page first" th:with="url_first=${form.makeQString(1)}" th:href="@{${url_first}}">-->
+<!--                <i class="fas fa-angle-double-left"></i>-->
+<!--            </a>-->
+<!--            <a th:if="${page.hasPreviousPageNav}==true" class="page prev" th:with="url_prev=${form.makeQString(page.firstPageNo-1)}" th:href="@{${url_prev}}">-->
+<!--                <i class="fas fa-angle-left"></i>-->
+<!--            </a>-->
+<!--            <th:block th:each="pageNum: ${#numbers.sequence(page.firstPageNo, page.lastPageNo)}">-->
+<!--                <a th:with="url=${form.makeQString(pageNum)}" th:href="@{${url}}" th:class="${pageNum}==${page.pageNum} ? 'on' : ''" th:text="${pageNum}"></a>-->
+<!--            </th:block>-->
+<!--            <a th:if="${page.hasNextPageNav}==true" class="page next" th:with="url_next=${form.makeQString(page.lastPageNo + 1)}" th:href="@{${url_next}}">-->
+<!--                <i class="fas fa-angle-right"></i>-->
+<!--            </a>-->
+<!--            <a th:if="${page.hasLastPageNav}==true" class="page last" th:with="url_last=${form.makeQString(page.totalPage)}" th:href="@{${url_last}}">-->
+<!--                <i class="fas fa-angle-double-right"></i>-->
+<!--            </a>-->
+<!--        </div>-->
 <!--        출처: https://pparkseona.tistory.com/entry/게시판-페이지-구현하기-자바sts로-페이징-처리하기 [Hello sunny Worlds!:티스토리]-->
 <!--        <span th:each="pager: ${#numbers.sequence(startPage, endPage)}">-->
 <!--&lt;!&ndash;        <div th:text="${startPage}"></div>    <div th:text="${endPage}"></div>&ndash;&gt;-->
