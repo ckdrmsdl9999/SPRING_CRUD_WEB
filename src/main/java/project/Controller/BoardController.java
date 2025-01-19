@@ -152,7 +152,6 @@ public class BoardController {
         List<Board> board = boardRepository.findAll(pageable,offset,limit);
         System.out.println("사이즈테스트:"+pageable.getPageSize()+"사이즈테스트2:"+pageable.getPageNumber());//10,5
 
-//      Page<BoDard> dto=board.map(a->new Board());               //새로운코드시험중
         int page=pageable.getPageNumber()-1;
         int pageLimit=3;
         model.addAttribute("startPage",2);
