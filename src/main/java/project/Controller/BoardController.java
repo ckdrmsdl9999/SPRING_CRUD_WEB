@@ -14,6 +14,7 @@ import project.Repository.BoardRepository;
 import project.Repository.CommentRepository;
 import project.Repository.MemberRepository;
 import project.Repository.ReplieRepository;
+import project.Service.BoardService;
 import project.Service.Pagination;
 import project.domain.*;
 
@@ -31,6 +32,9 @@ public class BoardController {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final ReplieRepository replieRepository;
+
+    private final BoardService boardService;
+
 
     @ResponseBody
     @GetMapping("/board/write2")//글쓰기 이동
@@ -116,7 +120,8 @@ public class BoardController {
         board=boardRepository.findOne(id);
         board.setViewcount(board.getViewcount()+1);//조회수
         List<Comment> comment = commentRepository.findBy(id); //null처리?
-        boardRepository.save(board);
+//        boardRepository.save(board);//repactoring중
+        boardService.save(board);
         model.addAttribute("board",board);
         model.addAttribute("comment",comment);
         LoginForm form = (LoginForm) httpSession.getAttribute("mysessionmember");//세션추가
@@ -139,8 +144,8 @@ public class BoardController {
         Member member = memberRepository.findByLoginId(loginForm.getLoginId()).orElse(null);
         board.setMember(member);//외래키
 
-        boardRepository.save(board);
-
+//        boardRepository.save(board);//리펙터링중
+        boardService.save(board);
         return "redirect:/board";
     }
 

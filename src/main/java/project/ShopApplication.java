@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.util.UrlPathHelper;
 import project.Security.Intercepter.LoginCheckInterCepter;
-import project.Security.Intercepter.TestIntercepter;
+
 
 import java.util.ArrayList;
 import java.util.List;
